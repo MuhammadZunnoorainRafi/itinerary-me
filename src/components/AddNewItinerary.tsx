@@ -60,8 +60,7 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
         endDate: endDate || initialEndDate,
         activities: itinerary
           ? itinerary.activities
-          : itineraryForActivities.activities
-        // : { booked: {}, unbooked: {} }
+        : { booked: {}, unbooked: {} }
       };
       itinerary
         ? dispatch({ type: 'UPDATE_ITINERARY', payload })

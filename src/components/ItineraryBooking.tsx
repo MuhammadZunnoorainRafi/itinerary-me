@@ -193,10 +193,14 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
             activeActivityId={activeId}
           />
         </DropDownActivities>
-        <TabGroup>
-          <TabList className={'gap-x-3 flex'}>
+        <TabGroup className="mt-2">
+          <TabList className={'gap-x-1 flex'}>
             {dateArray.map((val) => (
-              <Tab key={val} onClick={() => setActiveDay(val)}>
+              <Tab
+                key={val}
+                className="rounded-full px-3 text-[12px] text-black focus:outline-none data-[selected]:bg-blue/10 data-[hover]:bg-blue/5 data-[selected]:data-[hover]:bg-blue/10 data-[focus]:outline-1 data-[focus]:outline-blue data-[selected]:border data-[selected]:border-blue"
+                onClick={() => setActiveDay(val)}
+              >
                 {dayjs(val).format('MMM D')}
               </Tab>
             ))}
