@@ -60,4 +60,4 @@ export type ActionItinerary =
   | { payload: Itinerary; type: 'CREATE_ITINERARY' }
   | { payload: Itinerary; type: 'UPDATE_ITINERARY' }
   | { payload: Itinerary; type: 'UPDATE_ITINERARY_ACTIVITIES' }
-  | { payload: UnBookedWithId; type: 'UPDATE_ITINERARY_UNBOOKED_ACTIVITIES' };
+  | { payload: { id: string }; type: 'DELETE_ITINERARY' };

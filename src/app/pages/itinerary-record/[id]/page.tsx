@@ -15,7 +15,6 @@ function Page() {
     return <p>Itinerary not found</p>;
   }
 
-  console.log({ itinerary });
   return (
     <div className="container-mobile">
       <div className="py-4">

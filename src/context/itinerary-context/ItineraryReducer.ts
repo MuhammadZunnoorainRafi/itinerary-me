@@ -21,6 +21,13 @@ export const itineraryReducer = (
         itineraries: updatedItineraryArray
       };
     }
+    case 'DELETE_ITINERARY': {
+      return {
+        itineraries: state.itineraries.filter(
+          (val) => val.id !== action.payload.id
+        )
+      };
+    }
     case 'UPDATE_ITINERARY_ACTIVITIES': {
       const updatedItineraryArray = state.itineraries.map((val) =>
         val.id === action.payload.id ? action.payload : val

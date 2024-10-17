@@ -28,7 +28,11 @@ const AddActivityModal = () => {
   //     setModalOpenOrClose(!isModalOpenOrClose);
   //   };
 
-  const [open, setOpen] = React.useState(false);
+  const haveActivityCheck =
+    currentItinerary?.activities.unbooked &&
+    Object.keys(currentItinerary?.activities.unbooked).length > 0;
+
+  const [open, setOpen] = React.useState(haveActivityCheck ? false : true);
 
   const handleClickOpen = () => {
     setOpen(true);

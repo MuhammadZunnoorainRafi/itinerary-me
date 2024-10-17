@@ -9,7 +9,7 @@ interface DropDownActivitiesProps {
 const DropDownActivities: React.FC<DropDownActivitiesProps> = ({
   children
 }) => {
-  const [isOpen, setIsOpen] = useState<boolean>(false); // Define the state type
+  const [isOpen, setIsOpen] = useState<boolean>(true); // Define the state type
 
   const toggleAccordion = () => {
     setIsOpen(!isOpen);

@@ -1,4 +1,5 @@
 'use client';
+import Link from 'next/link';
 import { homeImageSliderData } from '../utility/homeImageSlider';
 import Image from 'next/image';
 import { useRef } from 'react';
@@ -32,18 +33,20 @@ const HomeImageSlider = () => {
             }
           }}
         >
-          {homeImageSliderData.map((ImageDetails) => (
+          {homeImageSliderData.map((imageDetails) => (
             <SwiperSlide
-              key={ImageDetails.id}
+              key={imageDetails.id}
               className="min-w-[80%] max-w-[80%]"
             >
-              <Image
-                className="rounded-[15px]"
-                src={ImageDetails.url}
-                alt={ImageDetails.title}
-                width={500}
-                height={250}
-              />
+              <Link href={`pages/tour-details#${imageDetails.id}`}>
+                <Image
+                  className="rounded-[15px]"
+                  src={imageDetails.url}
+                  alt={imageDetails.title}
+                  width={500}
+                  height={250}
+                />
+              </Link>
             </SwiperSlide>
           ))}
         </Swiper>

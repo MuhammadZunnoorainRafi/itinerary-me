@@ -17,7 +17,7 @@ const TourDetailsCard: React.FC<TourDetailsCardProps> = ({ shareData }) => {
   return (
     <div className="pb-5">
       {shareData.map((tourPlaceData, index) => (
-        <div key={tourPlaceData.id}>
+        <div key={tourPlaceData.id} id={tourPlaceData.id}>
           <h5
             className={`text-[16px] font-semibold text-dark-blue px-3 ${index === 0 ? 'mt-0' : 'mt-8'}`}
           >

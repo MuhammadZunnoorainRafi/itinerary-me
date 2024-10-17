@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidV4 } from 'uuid';
 import Button from './Button';
 import DateRangePicker from './DatesRangesPicker';
-import { itinerary as itineraryForActivities } from '@itineract/utility/itinerary';
 
 interface AddNewItineraryProps {
   onSubmitCloseModal: () => void; // Prop to handle modal closing
@@ -60,7 +59,7 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
         endDate: endDate || initialEndDate,
         activities: itinerary
           ? itinerary.activities
-        : { booked: {}, unbooked: {} }
+          : { booked: {}, unbooked: {} }
       };
       itinerary
         ? dispatch({ type: 'UPDATE_ITINERARY', payload })

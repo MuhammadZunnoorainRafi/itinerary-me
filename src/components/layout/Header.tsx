@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import { IoMenu } from 'react-icons/io5';
 import SearchBar from '../SearchBar';
-import { usePathname } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { GoLocation } from 'react-icons/go';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
@@ -14,6 +14,7 @@ const Header = () => {
     '/pages/itinerary-record',
     '/pages/create-itinerary'
   ];
+  const router = useRouter();
 
   return (
     <header className="bg-primary px-4 py-2">
@@ -58,7 +59,10 @@ const Header = () => {
                           Select location
                         </h1>
                         <div className="form-control mb-2">
-                          <label className="text-slate-800 flex items-center justify-start gap-x-2 cursor-pointer">
+                          <label
+                            onClick={() => router.push('/')}
+                            className="text-slate-800 flex items-center justify-start gap-x-2 cursor-pointer"
+                          >
                             <input
                               type="radio"
                               name="radio-10"
@@ -71,7 +75,10 @@ const Header = () => {
                           </label>
                         </div>
                         <div className="form-control">
-                          <label className="text-slate-800 flex items-center justify-start gap-x-2 cursor-pointer">
+                          <label
+                            onClick={() => router.push('/philipines')}
+                            className="text-slate-800 flex items-center justify-start gap-x-2 cursor-pointer"
+                          >
                             <input
                               type="radio"
                               name="radio-10"

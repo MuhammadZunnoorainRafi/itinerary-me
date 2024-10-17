@@ -8,7 +8,7 @@ import TravelCard from './TravelCard';
 
 // Define the props for the Imageslider component
 interface ImagesliderProps {
-  sliderData: TrendingImageSliderDataArray   ; // Use the inferred type
+  sliderData: TrendingImageSliderDataArray; // Use the inferred type
   heading: string;
   className?: string;
 }
@@ -47,7 +47,8 @@ const Imageslider: React.FC<ImagesliderProps> = ({
               {heading === 'Trending' && (
                 <TravelCard cardDetails={cardDetails} />
               )}
-              {heading === 'Tour Packages' && (
+              {(heading === 'Tour Packages' ||
+                heading === 'We Recommended') && (
                 <TravelCard cardDetails={cardDetails} />
               )}
             </SwiperSlide>

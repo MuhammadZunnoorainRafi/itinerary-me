@@ -18,7 +18,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: 'Itineract - Your Getaway Plan Starts Here (Demo)',
+  title: '🌐 Itineract - Your Getaway Plan Starts Here (Demo)',
   description:
     'Plan your next getaway with Itineract. Create your own itinerary, share it with friends, and explore the world together.'
 };

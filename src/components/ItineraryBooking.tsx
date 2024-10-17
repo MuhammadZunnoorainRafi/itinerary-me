@@ -180,7 +180,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     itinerary.activities.booked = bookedActivities;
     itinerary.activities.unbooked = unbookedActivities;
     const payload = itinerary;
-    dispatch({ type: 'UPDATE_ITINERARY_ACTIVITIES', payload });
+    dispatch({ type: 'UPDATE_ITINERARY', payload });
   }, [bookedActivities, dispatch, itinerary, unbookedActivities]);
   return (
     <>
@@ -204,8 +204,8 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
                 {dayjs(val).format('MMM D')}
               </Tab>
             ))}
-            <Tab>Tab 2</Tab>
-            <Tab>Tab 3</Tab>
+            {/* <Tab>Tab 2</Tab>
+            <Tab>Tab 3</Tab> */}
           </TabList>
           <TabPanels>
             {dateArray.map((val) => (
@@ -217,8 +217,8 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
                 />
               </TabPanel>
             ))}
-            <TabPanel>Content 2</TabPanel>
-            <TabPanel>Content 3</TabPanel>
+            {/* <TabPanel>Content 2</TabPanel>
+            <TabPanel>Content 3</TabPanel> */}
           </TabPanels>
         </TabGroup>
         {/* <DaysList

@@ -1,6 +1,9 @@
+'use client';
 import Modal from 'react-modal';
 import { RiCloseFill } from 'react-icons/ri';
 import Image from 'next/image';
+import { useParams } from 'next/navigation';
+import DeleteItineraryModal from './itinerary/DeleteItineraryModalt';
 
 // Define the ModalPopUpProps interface
 interface ModalPopUpProps {
@@ -44,15 +47,16 @@ const ModalBox: React.FC<ModalPopUpProps> = ({
             />
           </div>
         ) : (
-          <div className="absolute -top-2 -right-2.5 p-2.5">
-            <Image
+          <div className="absolute top-1 right-0 p-2.5">
+            {/* <Image
               src="/images/delete-icon.png"
               alt="delete icon"
               width={60}
               height={60}
               className="rounded-md m-1 mr-3 cursor-pointer"
               onClick={onRequestCloseOrOpen}
-            />
+            /> */}
+            <DeleteItineraryModal />
           </div>
         )}
       </div>

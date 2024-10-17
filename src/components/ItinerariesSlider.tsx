@@ -30,7 +30,9 @@ const ItinerariesSlider: React.FC<ItinerariesSliderProps> = ({
           <h1 className="text-dark-blue font-semibold py-3">
             Your Itineraries
           </h1>
-          <span className="pr-3 text-primary">Create itinerary</span>
+          <Link href="/pages/create-itinerary" className="pr-3 text-primary">
+            Create itinerary
+          </Link>
         </div>
         {/* <Swiper
           ref={swiperRef} // Attach ref to Swiper
