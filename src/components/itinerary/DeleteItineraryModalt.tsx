@@ -33,7 +33,7 @@ const DeleteItineraryModal = () => {
   const handleDelete = () => {
     setTimeout(() => {
       dispatch({ type: 'DELETE_ITINERARY', payload: { id: params.id } });
-    }, 200);
+    }, 400);
     setOpen(false);
     router.push('/pages/create-itinerary');
   };
