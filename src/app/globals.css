@@ -1,0 +1,64 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer utilities {
+  .text-balance {
+    text-wrap: balance;
+  }
+
+  .scrollbar {
+    scrollbar-width: thin;
+    scrollbar-color: #676982 #ededed;
+  }
+
+  .scrollbar::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 6px rgba(0, 0, 0, 0.3);
+    background-color: #ededed;
+    border-radius: 5px;
+  }
+
+  .scrollbar::-webkit-scrollbar {
+    width: 5px;
+    background-color: #ededed;
+  }
+
+  .scrollbar::-webkit-scrollbar-thumb {
+    border-radius: 5px;
+    background-image: -webkit-gradient(
+      linear,
+      left bottom,
+      left top,
+      color-stop(0.44, #353360),
+      color-stop(0.72, #605da9),
+      color-stop(0.86, #676982)
+    );
+  }
+}
+
+.swiper {
+  width: 100%;
+  height: 100%;
+}
+
+.swiper-slide {
+  text-align: center;
+  font-size: 18px;
+  background: #fff;
+
+  /* Center slide text vertically */
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.swiper-slide img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.container-mobile {
+  @apply max-w-[700px] mx-auto;
+}

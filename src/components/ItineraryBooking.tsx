@@ -1,0 +1,240 @@
+'use client';
+import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core';
+import { useActivityDates } from '@itineract/hooks/useActivityDates';
+import { Itinerary } from '@itineract/types/Itinerary';
+import { useCallback, useEffect, useState } from 'react';
+
+import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
+import dayjs from 'dayjs';
+import CalendarOfActivities from './CalendarOfActivities';
+import DropDownActivities from './DropDownActivities';
+import ItineraryTitle from './ItineraryTitle';
+import UnbookedActivitiesList from './UnbookedActivitiesList';
+import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
+
+type ItineraryBookingProps = {
+  itinerary: Itinerary;
+};
+
+const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
+  const [activeId, setActiveId] = useState<string | null>(null);
+  const [unbookedActivities, setUnbookedActivities] = useState(
+    itinerary.activities.unbooked
+  );
+  const [bookedActivities, setBookedActivities] = useState(
+    itinerary.activities.booked
+  );
+
+  const { dateArray, activeDay, setActiveDay } = useActivityDates(
+    itinerary.startDate,
+    itinerary.endDate
+  );
+
+  const { dispatch } = useItineraryContext();
+
+  const handleDragStart = (e: DragStartEvent) => {
+    setActiveId(e.active?.id as string);
+    // console.log('drag start',e)
+  };
+  useEffect(() => {
+    setUnbookedActivities(itinerary.activities.unbooked);
+    setBookedActivities(itinerary.activities.booked);
+  }, [itinerary.activities]);
+  const handleDragEnd = useCallback(
+    (e: DragEndEvent) => {
+      // console.log(dateArray)
+      const { over } = e;
+      // console.log(over)
+      const overId = over?.id.toString();
+      // console.info(`Dropped over ${overId}`,activeDay,activeId,unbookedActivities[activeId as string]);
+
+      // If the activity is dropped to an active day, add it to the booked activities
+      if (overId && overId.startsWith('top-hour-')) {
+        const activityId = activeId as string;
+        const activity = bookedActivities[activityId];
+        if (activity) {
+          const updatedBookedActivities = {
+            ...bookedActivities,
+            [activityId]: {
+              ...activity,
+              date: activeDay,
+              startTime: overId
+                .replace('top-hour-', '')
+                .replace(/-\d{2}:\d{2}/, ''),
+              endTime: overId
+                .replace('top-hour-', '')
+                .replace(/\d{2}:\d{2}-/, '')
+            }
+          };
+          // console.log(updatedBookedActivities)
+          setBookedActivities(updatedBookedActivities);
+          setUnbookedActivities((prevUnbookedActivities) => {
+            const { [activityId]: _, ...rest } = prevUnbookedActivities;
+            return rest;
+          });
+          // setActiveId(null);
+        } else {
+          let unbookActivity = unbookedActivities[activityId];
+          if (unbookActivity) {
+            const updatedBookedActivities = {
+              ...bookedActivities,
+              [activityId]: {
+                ...unbookActivity,
+                date: activeDay,
+                startTime: overId
+                  .replace('top-hour-', '')
+                  .replace(/-\d{2}:\d{2}/, ''),
+                endTime: overId
+                  .replace('top-hour-', '')
+                  .replace(/\d{2}:\d{2}-/, '')
+              }
+            };
+            // console.log(updatedBookedActivities)
+            setBookedActivities(updatedBookedActivities);
+            setUnbookedActivities((prevUnbookedActivities) => {
+              const { [activityId]: _, ...rest } = prevUnbookedActivities;
+              return rest;
+            });
+            // setActiveId(null);
+          }
+        }
+      }
+      if (overId && overId.startsWith('bottom-hour-')) {
+        const activityId = activeId as string;
+        const activity = unbookedActivities[activityId];
+        if (activity) {
+          const updatedBookedActivities = {
+            ...bookedActivities,
+            [activityId]: {
+              ...activity,
+              date: activeDay,
+              startTime: overId
+                .replace('bottom-hour-', '')
+                .replace(/-\d{2}:\d{2}/, ''),
+              endTime: overId
+                .replace('bottom-hour-', '')
+                .replace(/\d{2}:\d{2}-/, '')
+            }
+          };
+          setBookedActivities(updatedBookedActivities);
+          setUnbookedActivities((prevUnbookedActivities) => {
+            const { [activityId]: _, ...rest } = prevUnbookedActivities;
+            console.log(activityId, rest, prevUnbookedActivities);
+            return rest;
+          });
+          // setActiveId(null);
+        }
+      }
+      if (overId === 'unbooked') {
+        const activityId = activeId as string;
+        const activity = bookedActivities[activityId];
+        if (activity) {
+          const updatedBookedActivities = {
+            ...unbookedActivities,
+            [activityId]: {
+              ...activity,
+              date: activeDay,
+              startTime: overId
+                .replace('top-hour-', '')
+                .replace(/-\d{2}:\d{2}/, ''),
+              endTime: overId
+                .replace('top-hour-', '')
+                .replace(/\d{2}:\d{2}-/, '')
+            }
+          };
+          // console.log(updatedBookedActivities)
+          setUnbookedActivities(updatedBookedActivities);
+          setBookedActivities((prevBookedActivities) => {
+            const { [activityId]: _, ...rest } = prevBookedActivities;
+            return rest;
+          });
+          // setActiveId(null);
+        }
+      }
+      if (
+        !overId ||
+        overId == undefined ||
+        over == null
+        // ||
+        // overId == 'unbooked'
+      ) {
+        // console.log('unbook')
+        // return false
+        setBookedActivities({ ...bookedActivities });
+        setUnbookedActivities({ ...unbookedActivities });
+        // setActiveId(null)
+      }
+      console.log(`Dragged over ID: ${overId}, Active ID: ${activeId}`);
+    },
+
+    [activeDay, activeId, bookedActivities, unbookedActivities]
+  );
+
+  let activites = Object.values(bookedActivities).filter((val) => {
+    if (val.date === activeDay) {
+      return val;
+    }
+  });
+
+  useEffect(() => {
+    itinerary.activities.booked = bookedActivities;
+    itinerary.activities.unbooked = unbookedActivities;
+    const payload = itinerary;
+    dispatch({ type: 'UPDATE_ITINERARY_ACTIVITIES', payload });
+  }, [bookedActivities, dispatch, itinerary, unbookedActivities]);
+  return (
+    <>
+      <ItineraryTitle itinerary={itinerary} />
+      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+        <DropDownActivities>
+          <UnbookedActivitiesList
+            // @ts-ignore
+            activities={unbookedActivities}
+            activeActivityId={activeId}
+          />
+        </DropDownActivities>
+        <TabGroup>
+          <TabList className={'gap-x-3 flex'}>
+            {dateArray.map((val) => (
+              <Tab key={val} onClick={() => setActiveDay(val)}>
+                {dayjs(val).format('MMM D')}
+              </Tab>
+            ))}
+            <Tab>Tab 2</Tab>
+            <Tab>Tab 3</Tab>
+          </TabList>
+          <TabPanels>
+            {dateArray.map((val) => (
+              <TabPanel key={val}>
+                <CalendarOfActivities
+                  // {...itinerary}
+                  activities={activites}
+                  activeDay={activeDay}
+                />
+              </TabPanel>
+            ))}
+            <TabPanel>Content 2</TabPanel>
+            <TabPanel>Content 3</TabPanel>
+          </TabPanels>
+        </TabGroup>
+        {/* <DaysList
+          dates={dateArray}
+          activeDay={activeDay}
+          setActiveDay={setActiveDay}
+        />
+        <CalendarOfActivities
+          {...itinerary}
+          activities={bookedActivities}
+          activeDay={activeDay}
+        /> */}
+        {/* <CalendarOfActivities
+          {...itinerary}
+          activities={bookedActivities}
+          activeDay={activeDay}
+        /> */}
+      </DndContext>
+    </>
+  );
+};
+
+export default ItineraryBooking;
