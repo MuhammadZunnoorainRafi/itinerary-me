@@ -23,6 +23,7 @@ type Props = {
 const WhereToAddModal = ({ activityData }: Props) => {
   //   const [isModalOpenOrClose, setModalOpenOrClose] = useState(false); // State for modal
   const [selectedItineraryId, setSelectedItineraryId] = useState('');
+  const [errorMessage, setErrorMessage] = useState('');
   const {
     state: { itineraries },
     dispatch
@@ -47,7 +48,10 @@ const WhereToAddModal = ({ activityData }: Props) => {
       (itinerary) => itinerary.id === selectedItineraryId
     );
 
-    if (!selectedItinerary) return;
+    if (!selectedItinerary) {
+      setErrorMessage('Please select Itinerary');
+      return;
+    }
 
     const formattedActivityData = {
       id: activityData.id,
@@ -108,7 +112,10 @@ const WhereToAddModal = ({ activityData }: Props) => {
               {itineraries.map((itinerary) => (
                 <div
                   key={itinerary.id}
-                  onClick={() => setSelectedItineraryId(itinerary.id)}
+                  onClick={() => {
+                    setSelectedItineraryId(itinerary.id);
+                    setErrorMessage('');
+                  }}
                   className={`${selectedItineraryId === itinerary.id ? 'border-blue border-2' : 'border-[2px]'} flex flex-col justify-center   max-h-[110px] min-h-[110px] px-4 sm:px-6  rounded-[6px] cursor-pointer"`}
                 >
                   <h5 className="text-dark-blue font-semibold pb-0.5">
@@ -132,6 +139,9 @@ const WhereToAddModal = ({ activityData }: Props) => {
                 </div>
               </div>
             </div>
+            {errorMessage && (
+              <p className="text-center text-red-500 pt-2">{errorMessage}</p>
+            )}
             {/* Pass AddNewItinerary as content */}
             {/* <ModalBox
               mode="create"
