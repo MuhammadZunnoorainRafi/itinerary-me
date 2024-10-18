@@ -4,16 +4,21 @@ import ActivityItem from './ActivityItem';
 import Draggable from './Draggable';
 import { DragOverlay, useDroppable, useDraggable } from '@dnd-kit/core';
 import AddActivityModal from './activity/AddActivityModal';
+import { useParams } from 'next/navigation';
 
 type UnbookedActivitiesListProps = {
   activeActivityId: string | null;
   activities: Record<string, Itinerary>;
 };
-
+type Params = {
+  id: string;
+};
 const UnbookedActivitiesList: React.FC<UnbookedActivitiesListProps> = ({
   activeActivityId,
   activities
 }) => {
+  const params = useParams() as Params;
+
   const { isOver, setNodeRef } = useDroppable({
     id: 'unbooked'
   });
@@ -57,7 +62,7 @@ const UnbookedActivitiesList: React.FC<UnbookedActivitiesListProps> = ({
           <div
             className={` ml-2 min-h-[50px] flex  items-center justify-center flex-row flex-nowrap bg-[#EDEDED]  min-w-60 p-1 rounded-lg content-center cursor-pointer`}
           >
-            <AddActivityModal />
+            <AddActivityModal id={params.id} />
           </div>
         </div>
         <div className="mb-2">

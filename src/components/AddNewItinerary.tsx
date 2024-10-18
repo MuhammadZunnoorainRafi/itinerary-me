@@ -8,6 +8,7 @@ import 'react-toastify/dist/ReactToastify.css';
 import { v4 as uuidV4 } from 'uuid';
 import Button from './Button';
 import DateRangePicker from './DatesRangesPicker';
+import AddActivityModal from './activity/AddActivityModal';
 
 interface AddNewItineraryProps {
   onSubmitCloseModal: () => void; // Prop to handle modal closing
@@ -25,6 +26,7 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
   const [itineraryName, setItineraryName] = useState<string>(
     itinerary?.title || ''
   );
+  const [createdItineraryId, setCreatedItitnerayId] = useState('');
   const [InputCheck, setInputCheck] = useState<boolean>(false);
   const [DateRangeChecker, setDateRangeChecker] = useState<boolean>(false);
 
@@ -67,12 +69,18 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
       itinerary
         ? toast.success('Itinerary updated')
         : toast.success('New itinerary added');
+      setCreatedItitnerayId(payload.id);
       setItineraryName('');
       setDateRange({ startDate: '', endDate: '' });
-      onSubmitCloseModal(); // Close the modal
+      // onSubmitCloseModal(); // Close the modal
     } else {
       console.log('Form cannot be submitted now.');
     }
+  };
+
+  const handleActivityModalClose = () => {
+    setCreatedItitnerayId(''); // Reset the ID when the modal is closed
+    onSubmitCloseModal(); // Now close the parent modal
   };
 
   return (
@@ -92,7 +100,11 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
           </div>
         </div>
       )}
-
+      {createdItineraryId && (
+        <>
+          <AddActivityModal id={createdItineraryId} onClose={handleActivityModalClose} />
+        </>
+      )}
       {InputCheck && (
         <span className="text-[14.5px] text-red-500">
           Please enter at least 4 characters in the itinerary name.

@@ -16,23 +16,26 @@ import Reviews from '../Reviews';
 import { Itinerary } from '@itineract/types/Itinerary';
 import { useParams } from 'next/navigation';
 
-const AddActivityModal = () => {
-  const params = useParams();
+type Props = {
+  id: string;
+  onClose?: () => void;
+};
+
+const AddActivityModal = ({ id, onClose }: Props) => {
   const {
     state: { itineraries },
     dispatch
   } = useItineraryContext();
-  const currentItinerary = itineraries.find((val) => val.id === params!.id);
+  const currentItinerary = itineraries.find((val) => val.id === id);
   // const { state, dispatch } = useItineraryContext();
   //   const handleModal = () => {
   //     setModalOpenOrClose(!isModalOpenOrClose);
   //   };
-
   const haveActivityCheck =
     currentItinerary?.activities.unbooked &&
     Object.keys(currentItinerary?.activities.unbooked).length > 0;
-
-  const [open, setOpen] = React.useState(haveActivityCheck ? false : true);
+  const [open, setOpen] = useState(haveActivityCheck ? false : true);
+  console.log({ open });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -40,6 +43,7 @@ const AddActivityModal = () => {
 
   const handleClose = () => {
     setOpen(false);
+    onClose && onClose();
   };
 
   const handleAdd = (
@@ -74,7 +78,6 @@ const AddActivityModal = () => {
 
     dispatch({ type: 'UPDATE_ITINERARY', payload });
     handleClose();
-    console.log('CLIECKED');
   };
 
   return (
@@ -151,7 +154,7 @@ const AddActivityModal = () => {
             <Button
               name="Close"
               className="w-full !text-blue font-semibold bg-transparent border border-blue"
-              onClick={() => setOpen(false)}
+              onClick={handleClose}
             />
           </div>
         </DialogActions>
