@@ -4,7 +4,7 @@ import { useRef } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import TravelCard from '../TravelCard';
+import TravelCardPh from './TravelCardPh';
 
 type Props = {
   heading: string;
@@ -42,7 +42,7 @@ function HeritageTour({ heading, duration }: Props) {
                 key={cardDetails.id}
                 className={`min-w-[44%] max-w-[44%]`}
               >
-                <TravelCard cardDetails={cardDetails} />
+                <TravelCardPh cardDetails={cardDetails} />
               </SwiperSlide>
             ))}
           </Swiper>

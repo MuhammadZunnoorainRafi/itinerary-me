@@ -7,6 +7,7 @@ import Link from 'next/link';
 import { GoLocation } from 'react-icons/go';
 import { Menu, MenuButton, MenuItem, MenuItems } from '@headlessui/react';
 import { AnimatePresence, motion } from 'framer-motion';
+import { useState } from 'react';
 
 const Header = () => {
   const pathname = usePathname();
@@ -15,6 +16,9 @@ const Header = () => {
     '/pages/create-itinerary'
   ];
   const router = useRouter();
+  const [checkedCountry, setCheckedCountry] = useState(
+    pathname?.includes('philipines') ? 'Philipines' : 'Singapore'
+  );
 
   return (
     <header className="bg-primary px-4 py-2">
@@ -67,7 +71,8 @@ const Header = () => {
                               type="radio"
                               name="radio-10"
                               className="radio checked:bg-blue peer"
-                              defaultChecked
+                              onChange={() => setCheckedCountry('Singapore')}
+                              checked={checkedCountry === 'Singapore'}
                             />
                             <span className="peer-checked:text-blue text-slate-700">
                               Singapore
@@ -83,7 +88,8 @@ const Header = () => {
                               type="radio"
                               name="radio-10"
                               className="radio checked:bg-blue peer"
-                              defaultChecked
+                              onChange={() => setCheckedCountry('Philipines')}
+                              checked={checkedCountry === 'Philipines'}
                             />
                             <span className="peer-checked:text-blue text-slate-700">
                               Philipines

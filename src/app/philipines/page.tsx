@@ -1,18 +1,16 @@
-import { trendingImageSliderData } from '@itineract/utility/trendingImageSlider';
-import Imageslider from '@itineract/components/Imageslider';
-import HomeImageSlider from '@itineract/components/HomeImageSlider';
-import ItinerariesSlider from '@itineract/components/ItinerariesSlider';
-import { itinerary } from '@itineract/utility/itinerary';
+import HomeImageSliderPh from '@itineract/components/philipines/FeaturedAttractionPh';
 import HeritageTour from '@itineract/components/philipines/HeritageTour';
+import ImagesliderPh from '@itineract/components/philipines/ImageSliderPh';
+import { trendingImageSliderData } from '@itineract/utility/trendingImageSlider';
 
 export default function Page() {
   return (
     <div className="container-mobile">
-      <HomeImageSlider />
+      <HomeImageSliderPh />
       <HeritageTour heading="Heritage Tour" duration="3 days" />
       {/* <ItinerariesSlider ItinerarisData={itinerary} /> */}
-      <Imageslider sliderData={trendingImageSliderData} heading="Trending" />
-      <Imageslider
+      <ImagesliderPh sliderData={trendingImageSliderData} heading="Trending" />
+      <ImagesliderPh
         sliderData={trendingImageSliderData}
         heading="We Recommended"
       />
