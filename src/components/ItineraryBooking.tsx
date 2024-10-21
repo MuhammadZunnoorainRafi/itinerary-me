@@ -65,17 +65,15 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
               // Skip comparing with the same activity
               if (bookedActivity.id === activityId) return false;
 
-              const bookedStartTime = bookedActivity.startTime;
-              const bookedEndTime = bookedActivity.endTime;
+              const bookedStartTime = bookedActivity.startTime as string;
+              const bookedEndTime = bookedActivity.endTime as string;
 
               // Check if the new activity overlaps with any existing activity's time range
               return (
-                (newStartTime >= bookedStartTime! &&
-                  newStartTime < bookedEndTime!) || // Overlaps with the start of an existing activity
-                (newEndTime > bookedStartTime! &&
-                  newEndTime <= bookedEndTime!) || // Overlaps with the end of an existing activity
-                (newStartTime <= bookedStartTime! &&
-                  newEndTime >= bookedEndTime!) // Completely contains an existing activity
+                (newStartTime >= bookedStartTime &&
+                  newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+                (newEndTime > bookedStartTime && newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
+                (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
               );
             }
           );
@@ -118,17 +116,17 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
                 // Skip comparing with the same activity
                 if (bookedActivity.id === activityId) return false;
 
-                const bookedStartTime = bookedActivity.startTime;
-                const bookedEndTime = bookedActivity.endTime;
+                const bookedStartTime = bookedActivity.startTime as string;
+                const bookedEndTime = bookedActivity.endTime as string;
 
                 // Check if the new activity overlaps with any existing activity's time range
                 return (
-                  (newStartTime >= bookedStartTime! &&
-                    newStartTime < bookedEndTime!) || // Overlaps with the start of an existing activity
-                  (newEndTime > bookedStartTime! &&
-                    newEndTime <= bookedEndTime!) || // Overlaps with the end of an existing activity
-                  (newStartTime <= bookedStartTime! &&
-                    newEndTime >= bookedEndTime!) // Completely contains an existing activity
+                  (newStartTime >= bookedStartTime &&
+                    newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+                  (newEndTime > bookedStartTime &&
+                    newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
+                  (newStartTime <= bookedStartTime &&
+                    newEndTime >= bookedEndTime) // Completely contains an existing activity
                 );
               }
             );
