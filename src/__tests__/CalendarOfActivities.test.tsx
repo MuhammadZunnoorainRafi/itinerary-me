@@ -17,6 +17,7 @@ const testItinerary: Itinerary = {
         description: '1 day, 3 pax',
         photo: '/images/puka-beach.png',
         duration: 60,
+        takeSpace: 1,
         createdAt: '2024-06-01T08:00:00'
       },
       'activity-2': {
@@ -24,6 +25,7 @@ const testItinerary: Itinerary = {
         name: 'Some other activity',
         description: '1 day, 3 pax',
         photo: '/images/parasail.png',
+        takeSpace: 1,
         duration: 60,
         createdAt: '2024-06-01T08:00:00'
       }
@@ -35,6 +37,7 @@ const testItinerary: Itinerary = {
         description: '1 day, 3 pax',
         photo: '/images/parasail.png',
         duration: 60,
+        takeSpace: 1,
         createdAt: '2024-06-01T08:00:00',
         date: '2024-06-12',
         startTime: '09:00',

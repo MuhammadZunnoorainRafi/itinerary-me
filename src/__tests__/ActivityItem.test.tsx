@@ -9,6 +9,7 @@ describe('ActivityItem', () => {
     name: 'Test Activity',
     description: 'This is a test activity',
     duration: 60,
+    takeSpace: 1,
     createdAt: '2024-01-01T08:00:00'
   };
 

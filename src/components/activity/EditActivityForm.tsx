@@ -62,15 +62,6 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     setOpen(false);
   };
 
-  // console.log({ activity });
-
-  // useEffect(() => {
-  //   setSelectedDate(activity.startTime ? dayjs(activity.date) : null);
-  //   setSelectedTime(
-  //     activity.startTime ? parseTimeString(activity.startTime) : null
-  //   );
-  // }, [activity]);
-
   if (!itinerary) {
     return;
   }
@@ -88,39 +79,6 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     (val) => val.id === activity.id
   );
 
-  // const handleSave = () => {
-  //   // Add logic to save the form data
-  //   const payload = {
-  //     ...itinerary,
-  //     activities: {
-  //       booked: isBookedActivity
-  //         ? {
-  //             ...itinerary.activities.booked,
-  //             [isBookedActivity.id]: {
-  //               ...isBookedActivity,
-  //               date: selectedDate?.format('YYYY-MM-DD'),
-  //               startTime: selectedTime?.format('HH:mm'),
-  //               endTime: selectedTime?.add(1, 'hour').format('HH:mm')
-  //             }
-  //           }
-  //         : itinerary.activities.booked,
-  //       unbooked: isUnBookedActivity
-  //         ? {
-  //             ...itinerary.activities.unbooked,
-  //             [isUnBookedActivity.id]: {
-  //               ...isUnBookedActivity,
-  //               date: selectedDate?.format('YYYY-MM-DD'),
-  //               startTime: selectedTime?.format('HH:mm'),
-  //               endTime: selectedTime?.add(1, 'hour').format('HH:mm')
-  //             }
-  //           }
-  //         : itinerary?.activities.unbooked
-  //     }
-  //   };
-  //   dispatch({ type: 'UPDATE_ITINERARY', payload });
-  //   setOpen(false);
-  // };
-
   const handleSave = () => {
     const payload = {
       ...itinerary,
@@ -135,9 +93,10 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
                     selectedDate?.format('YYYY-MM-DD') || isBookedActivity.date, // Ensure date isn't overwritten to undefined
                   startTime:
                     selectedTime?.format('HH:mm') || isBookedActivity.startTime,
-                  endTime:
-                    selectedTime?.add(1, 'hour').format('HH:mm') ||
-                    isBookedActivity.endTime
+                  endTime: selectedTime?.add(2, 'hour').format('HH:mm')
+                  // endTime:
+                  //   selectedTime?.add(1, 'hour').format('HH:mm') ||
+                  //   isBookedActivity.endTime
                 }
               }
             : itinerary.activities.booked,

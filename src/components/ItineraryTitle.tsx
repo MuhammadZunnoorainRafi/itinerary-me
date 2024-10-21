@@ -29,7 +29,7 @@ const ItineraryTitle: React.FC<ItineraryTitleProps> = ({ itinerary }) => {
   };
 
   return (
-    <div className="flex flex-row max-w-screen-md px-4 py-2 pr-4 items-center justify-between">
+    <div className="flex flex-row max-w-screen-md px-4 py-2 pr-4 items-center justify-between ">
       <div className="grow">
         <h1 className="font-poppins font-bold text-lg leading-6 text-dark-blue">
           {itinerary.title}
@@ -40,7 +40,7 @@ const ItineraryTitle: React.FC<ItineraryTitleProps> = ({ itinerary }) => {
       </div>
       <BiPencil
         onClick={handleModal}
-        className="text-[18px] text-dark-blue cursor-pointer"
+        className="text-[18px] text-dark-blue cursor-pointer relative"
         width={48}
         height={48}
       />

@@ -82,6 +82,7 @@ export const heritageTourData = {
             description: '1 day, 3 pax',
             photo: { url: '/images/puka-beach.png', title: 'Puka Beach' },
             duration: 60,
+            takeSpace: 1,
             createdAt: '2024-06-01T08:00:00'
           }
         },
@@ -95,6 +96,7 @@ export const heritageTourData = {
               title: 'Boracay Para Sailing'
             },
             duration: 120,
+            takeSpace: 1,
             createdAt: '2024-06-01T08:00:00',
             date: '2024-10-12',
             startTime: '06:00',
@@ -106,6 +108,7 @@ export const heritageTourData = {
             description: '1 day, 3 pax',
             photo: { url: '/images/hot-bath.png', title: 'Kawa Hot Bath' },
             duration: 60,
+            takeSpace: 1,
             createdAt: '2024-06-01T08:00:00',
             date: '2024-10-12',
             startTime: '09:00',
@@ -117,6 +120,7 @@ export const heritageTourData = {
             description: '1 day, 3 pax',
             photo: { url: '/images/lunch.png', title: "Lunch at D'Talipapa" },
             duration: 60,
+            takeSpace: 1,
             createdAt: '2024-06-01T08:00:00',
             date: '2024-10-12',
             startTime: '12:00',

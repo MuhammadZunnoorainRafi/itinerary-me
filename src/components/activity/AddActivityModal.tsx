@@ -14,7 +14,6 @@ import Link from 'next/link';
 import Button from '../Button';
 import Reviews from '../Reviews';
 import { Itinerary } from '@itineract/types/Itinerary';
-import { useParams } from 'next/navigation';
 
 type Props = {
   id: string;
@@ -35,7 +34,6 @@ const AddActivityModal = ({ id, onClose }: Props) => {
     currentItinerary?.activities.unbooked &&
     Object.keys(currentItinerary?.activities.unbooked).length > 0;
   const [open, setOpen] = useState(haveActivityCheck ? false : true);
-  console.log({ open });
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -58,6 +56,7 @@ const AddActivityModal = ({ id, onClose }: Props) => {
       description: description.slice(0, 14) + ' ...',
       photo: image,
       duration: 60,
+      takeSpace:1,
       createdAt: new Date().toISOString().slice(0, 19)
     };
 

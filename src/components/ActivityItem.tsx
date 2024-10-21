@@ -10,12 +10,14 @@ type ActivityItemProps = {
 };
 
 const ActivityItem: React.FC<ActivityItemProps> = ({ activity }) => {
-  const activityHeight = (activity?.duration / 60) * 56;
+  const activityPadding =
+    activity.takeSpace > 1 ? `${(activity.takeSpace - 1) * 62}px` : `4px`;
   return (
-    <div className="flex items-center">
+    <div>
       <div
         data-testid={`activity-${activity.id}`}
-        className={`flex flex-row flex-nowrap bg-light-purple h-[${activityHeight}px] min-w-60 p-1 rounded-lg content-center `}
+        style={{ paddingBottom: activityPadding }}
+        className={`flex flex-row flex-nowrap bg-light-purple relative min-w-60 p-1 rounded-lg content-center `}
       >
         <Image
           src={

@@ -59,6 +59,7 @@ const WhereToAddModal = ({ activityData }: Props) => {
       description: activityData.description.slice(0, 14) + ' ...',
       photo: activityData.image,
       duration: 60,
+      takeSpace: 1,
       createdAt: new Date().toISOString().slice(0, 19)
     };
 

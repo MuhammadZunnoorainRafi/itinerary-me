@@ -13,6 +13,7 @@ const ActivitySchema = z.object({
   description: z.string(),
   photo: PhotoSchema,
   duration: z.number(),
+  takeSpace: z.number().default(1),
   createdAt: z.string(),
   // Optional fields for booked activities
   date: z.string().optional(),

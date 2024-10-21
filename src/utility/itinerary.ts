@@ -31,6 +31,7 @@ export const itinerary: Itinerary = {
         description: '1 day, 3 pax',
         photo: { url: '/images/lunch.png', title: "Lunch at D'Talipapa" },
         duration: 60,
+        takeSpace: 1,
         createdAt: '2024-06-01T08:00:00'
         // date: '2024-06-12',
         // startTime: '01:00',
@@ -44,6 +45,7 @@ export const itinerary: Itinerary = {
         description: '1 day, 3 pax',
         photo: { url: '/images/parasail.png', title: 'Boracay Para Sailing' },
         duration: 120,
+        takeSpace: 1,
         createdAt: '2024-06-01T08:00:00',
         date: '2024-06-12',
         startTime: '09:00',

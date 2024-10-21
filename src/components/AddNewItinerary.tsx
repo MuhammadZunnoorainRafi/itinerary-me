@@ -102,7 +102,10 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
       )}
       {createdItineraryId && (
         <>
-          <AddActivityModal id={createdItineraryId} onClose={handleActivityModalClose} />
+          <AddActivityModal
+            id={createdItineraryId}
+            onClose={handleActivityModalClose}
+          />
         </>
       )}
       {InputCheck && (
