@@ -64,7 +64,7 @@ const CalendarOfActivities: React.FC<CalendarOfActivitiesProps> = ({
                 <ActivityItem activity={activity} />
               </Draggable>
               <button
-                className="group-hover:opacity-100 opacity-0 duration-200"
+                className="group-hover:opacity-100 opacity-0 duration-200 relative z-10"
                 onClick={() => setOpenActivityId(activity.id)}
               >
                 <FaEdit size={25} color="#646285" />

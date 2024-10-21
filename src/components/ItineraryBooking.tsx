@@ -11,6 +11,7 @@ import DropDownActivities from './DropDownActivities';
 import ItineraryTitle from './ItineraryTitle';
 import UnbookedActivitiesList from './UnbookedActivitiesList';
 import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
+import { formatTimeDnd } from '@itineract/utility/formateTimeDnd';
 
 type ItineraryBookingProps = {
   itinerary: Itinerary;
@@ -40,28 +41,56 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     setUnbookedActivities(itinerary.activities.unbooked);
     setBookedActivities(itinerary.activities.booked);
   }, [itinerary.activities]);
+
   const handleDragEnd = useCallback(
     (e: DragEndEvent) => {
-      // console.log(dateArray)
       const { over } = e;
-      // console.log(over)
       const overId = over?.id.toString();
-      // console.info(`Dropped over ${overId}`,activeDay,activeId,unbookedActivities[activeId as string]);
 
-      // If the activity is dropped to an active day, add it to the booked activities
       if (overId && overId.startsWith('top-hour-')) {
         const activityId = activeId as string;
         const activity = bookedActivities[activityId];
+
         if (activity) {
+          // const newOverId = formatTimeDnd(overId, activity.takeSpace);
+          const newOverId = formatTimeDnd(overId, activity.takeSpace);
+          const newStartTime = newOverId
+            .replace('top-hour-', '')
+            .replace(/-\d{2}:\d{2}/, '');
+          const newEndTime = newOverId
+            .replace('top-hour-', '')
+            .replace(/\d{2}:\d{2}-/, '');
+          const isConflict = Object.values(bookedActivities).some(
+            (bookedActivity) => {
+              // Skip comparing with the same activity
+              if (bookedActivity.id === activityId) return false;
+
+              const bookedStartTime = bookedActivity.startTime;
+              const bookedEndTime = bookedActivity.endTime;
+
+              // Check if the new activity overlaps with any existing activity's time range
+              return (
+                (newStartTime >= bookedStartTime &&
+                  newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+                (newEndTime > bookedStartTime && newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
+                (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
+              );
+            }
+          );
+
+          if (isConflict) {
+            return; // Exit the function if a conflict is detected
+          }
+
           const updatedBookedActivities = {
             ...bookedActivities,
             [activityId]: {
               ...activity,
               date: activeDay,
-              startTime: overId
+              startTime: newOverId
                 .replace('top-hour-', '')
                 .replace(/-\d{2}:\d{2}/, ''),
-              endTime: overId
+              endTime: newOverId
                 .replace('top-hour-', '')
                 .replace(/\d{2}:\d{2}-/, '')
             }
@@ -76,6 +105,35 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
         } else {
           let unbookActivity = unbookedActivities[activityId];
           if (unbookActivity) {
+            const newStartTime = overId
+              .replace('top-hour-', '')
+              .replace(/-\d{2}:\d{2}/, '');
+            const newEndTime = overId
+              .replace('top-hour-', '')
+              .replace(/\d{2}:\d{2}-/, '');
+            const isConflict = Object.values(bookedActivities).some(
+              (bookedActivity) => {
+                // Skip comparing with the same activity
+                if (bookedActivity.id === activityId) return false;
+
+                const bookedStartTime = bookedActivity.startTime;
+                const bookedEndTime = bookedActivity.endTime;
+
+                // Check if the new activity overlaps with any existing activity's time range
+                return (
+                  (newStartTime >= bookedStartTime &&
+                    newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+                  (newEndTime > bookedStartTime &&
+                    newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
+                  (newStartTime <= bookedStartTime &&
+                    newEndTime >= bookedEndTime) // Completely contains an existing activity
+                );
+              }
+            );
+
+            if (isConflict) {
+              return; // Exit the function if a conflict is detected
+            }
             const updatedBookedActivities = {
               ...bookedActivities,
               [activityId]: {
@@ -139,7 +197,8 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
                 .replace(/-\d{2}:\d{2}/, ''),
               endTime: overId
                 .replace('top-hour-', '')
-                .replace(/\d{2}:\d{2}-/, '')
+                .replace(/\d{2}:\d{2}-/, ''),
+              takeSpace: 1
             }
           };
           // console.log(updatedBookedActivities)

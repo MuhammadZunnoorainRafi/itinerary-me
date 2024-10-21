@@ -17,6 +17,7 @@ import dayjs from 'dayjs';
 import { useParams } from 'next/navigation';
 import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
 import DeleteActivityDialogue from './DeleteActivityDialog';
+
 type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
@@ -26,7 +27,10 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
   const { state, dispatch } = useItineraryContext();
   const params = useParams();
   const itinerary = state.itineraries.find((val) => val.id === params!.id);
-  const [isAlreadyBooked, setIsAlreadyBooked] = useState(false);
+  const [isError, setIsError] = useState<
+    'idle' | 'booked' | 'invalidDate' | ''
+  >('');
+  const [invalidDateError, setInvalidDateError] = useState(false);
 
   const [selectedDate, setSelectedDate] = useState(
     activity.startTime ? dayjs(activity.date) : null
@@ -42,29 +46,19 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     return null;
   };
 
-  const [selectedTime, setSelectedTime] = useState(
+  const [selectedStartTime, setSelectedStartTime] = useState(
     activity.startTime ? parseTimeString(activity.startTime) : null
   );
+  const [selectedEndTime, setSelectedEndTime] = useState(
+    activity.endTime ? parseTimeString(activity.endTime) : null
+  );
+
+  const startTimeInNumber = +selectedStartTime!.format('H');
+  const endTimeInNumber = +selectedEndTime!.format('H');
+
   const handleDateChange = (newValue: any) => {
     setSelectedDate(newValue);
   };
-
-  const handleTimeChange = (newValue: any) => {
-    const isBookedAlreadyBooked = bookedActivities
-      .filter((val) => val.startTime !== isBookedActivity?.startTime)
-      .map((val) => val.startTime)
-      .includes(newValue?.format('HH:mm'));
-    setSelectedTime(newValue);
-    setIsAlreadyBooked(isBookedAlreadyBooked);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-  };
-
-  if (!itinerary) {
-    return;
-  }
 
   const bookedActivities = itinerary
     ? Object.values(itinerary.activities.booked)
@@ -79,12 +73,72 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     (val) => val.id === activity.id
   );
 
+  const handleStartTimeChange = (newValue: any) => {
+    if (endTimeInNumber <= +newValue.format('H')) {
+      setInvalidDateError(true);
+    } else {
+      setInvalidDateError(false);
+    }
+    // const isBookedAlreadyBooked = bookedActivities
+    //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
+    //   .map((val) => val.startTime)
+    //   .includes(newValue?.format('HH:mm'));
+    const isBookedAlreadyBooked = bookedActivities
+      .filter((val) => val.startTime !== isBookedActivity?.startTime)
+      .some(
+        (val) =>
+          newValue.format('HH:mm') >= val.startTime! &&
+          newValue.format('HH:mm') <= val.endTime!
+      );
+    setSelectedStartTime(newValue);
+    setIsError(isBookedAlreadyBooked ? 'booked' : 'idle');
+  };
+  const handleEndTimeChange = (newValue: any) => {
+    if (+newValue.format('H') <= startTimeInNumber) {
+      setInvalidDateError(true);
+    } else {
+      setInvalidDateError(false);
+    }
+    // const isBookedAlreadyBooked = bookedActivities
+    //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
+    //   .map((val) => val.startTime)
+    //   .includes(newValue?.format('HH:mm'));
+    const isBookedAlreadyBooked = bookedActivities
+      .filter((val) => val.startTime !== isBookedActivity?.startTime)
+      .some(
+        (val) =>
+          newValue.format('HH:mm') >= val.startTime! &&
+          newValue.format('HH:mm') <= val.endTime!
+      );
+    setSelectedEndTime(newValue);
+    setIsError(isBookedAlreadyBooked ? 'booked' : 'idle');
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+  if (!itinerary) {
+    return;
+  }
   const handleSave = () => {
+    if (endTimeInNumber <= startTimeInNumber) {
+      setInvalidDateError(true);
+    } else {
+      setInvalidDateError(false);
+    }
+
+    let takeSpace;
+    if (selectedStartTime && selectedEndTime) {
+      takeSpace =
+        +selectedEndTime?.format('H') - +selectedStartTime?.format('H');
+    } else {
+      takeSpace = 1;
+    }
     const payload = {
       ...itinerary,
       activities: {
         booked:
-          isBookedActivity && !isAlreadyBooked
+          isBookedActivity && isError === 'idle'
             ? {
                 ...itinerary.activities.booked,
                 [isBookedActivity.id]: {
@@ -92,11 +146,12 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
                   date:
                     selectedDate?.format('YYYY-MM-DD') || isBookedActivity.date, // Ensure date isn't overwritten to undefined
                   startTime:
-                    selectedTime?.format('HH:mm') || isBookedActivity.startTime,
-                  endTime: selectedTime?.add(2, 'hour').format('HH:mm')
-                  // endTime:
-                  //   selectedTime?.add(1, 'hour').format('HH:mm') ||
-                  //   isBookedActivity.endTime
+                    selectedStartTime?.format('HH:mm') ||
+                    isBookedActivity.startTime,
+                  endTime:
+                    selectedEndTime?.format('HH:mm') ||
+                    isBookedActivity.endTime,
+                  takeSpace: takeSpace
                 }
               }
             : itinerary.activities.booked,
@@ -108,10 +163,12 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
                 date:
                   selectedDate?.format('YYYY-MM-DD') || isUnBookedActivity.date,
                 startTime:
-                  selectedTime?.format('HH:mm') || isUnBookedActivity.startTime,
+                  selectedStartTime?.format('HH:mm') ||
+                  isUnBookedActivity.startTime,
                 endTime:
-                  selectedTime?.add(1, 'hour').format('HH:mm') ||
-                  isUnBookedActivity.endTime
+                  selectedEndTime?.format('HH:mm') ||
+                  isUnBookedActivity.endTime,
+                takeSpace: 1
               }
             }
           : itinerary?.activities.unbooked
@@ -133,22 +190,35 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
           {activity.name}
           <DeleteActivityDialogue activity={activity} />
         </h1>
-        {isAlreadyBooked && (
+        {isError === 'booked' && (
           <p className="text-red-500 px-3 text-center pb-3">
             This time slot is already booked!
           </p>
         )}
-        <div className="px-3 flex items-center justify-center gap-2">
+        {invalidDateError && (
+          <p className="text-red-500 px-3 text-center pb-3">
+            End time must be greater than start time!
+          </p>
+        )}
+        <div className="px-3 space-y-5">
           <DatePicker
             label="Select Date"
             value={selectedDate}
             onChange={handleDateChange}
+            className="w-full"
           />
-          <TimePicker
-            label="Select Time"
-            value={selectedTime}
-            onChange={handleTimeChange}
-          />
+          <div className=" flex items-center justify-center gap-2">
+            <TimePicker
+              label="Start Time"
+              value={selectedStartTime}
+              onChange={handleStartTimeChange}
+            />
+            <TimePicker
+              label="End Time"
+              value={selectedEndTime}
+              onChange={handleEndTimeChange}
+            />
+          </div>
         </div>
 
         <DialogActions>
@@ -159,7 +229,7 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
               onClick={() => setOpen(false)}
             />
             <Button
-              disabled={isAlreadyBooked}
+              disabled={isError === 'booked' || isError === 'invalidDate'}
               name="Save"
               className="w-full"
               onClick={handleSave}

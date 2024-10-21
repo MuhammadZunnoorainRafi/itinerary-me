@@ -11,7 +11,9 @@ type ActivityItemProps = {
 
 const ActivityItem: React.FC<ActivityItemProps> = ({ activity }) => {
   const activityPadding =
-    activity.takeSpace > 1 ? `${(activity.takeSpace - 1) * 62}px` : `4px`;
+    activity.takeSpace > 1
+      ? `${(activity.takeSpace - 1) * 62 - (activity.takeSpace > 2 ? activity.takeSpace * 3 : 0)}px`
+      : `4px`;
   return (
     <div>
       <div
