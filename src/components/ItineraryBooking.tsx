@@ -1,5 +1,13 @@
 'use client';
-import { DndContext, DragEndEvent, DragStartEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragEndEvent,
+  DragStartEvent,
+  PointerSensor,
+  TouchSensor,
+  useSensor,
+  useSensors
+} from '@dnd-kit/core';
 import { useActivityDates } from '@itineract/hooks/useActivityDates';
 import { Itinerary } from '@itineract/types/Itinerary';
 import { useCallback, useEffect, useState } from 'react';
@@ -234,6 +242,16 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
       return val;
     }
   });
+  const sensors = useSensors(
+    useSensor(PointerSensor),
+    useSensor(TouchSensor, {
+      // Delay activation to allow touch scrolling
+      activationConstraint: {
+        delay: 250, // Delay drag to avoid interfering with scroll
+        tolerance: 5 // Allow small movement before activation
+      }
+    })
+  );
 
   useEffect(() => {
     itinerary.activities.booked = bookedActivities;
@@ -244,7 +262,11 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
   return (
     <>
       <ItineraryTitle itinerary={itinerary} />
-      <DndContext onDragEnd={handleDragEnd} onDragStart={handleDragStart}>
+      <DndContext
+        sensors={sensors}
+        onDragEnd={handleDragEnd}
+        onDragStart={handleDragStart}
+      >
         <DropDownActivities>
           <UnbookedActivitiesList
             // @ts-ignore

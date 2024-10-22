@@ -50,10 +50,7 @@ const CalendarOfActivities: React.FC<CalendarOfActivitiesProps> = ({
   });
 
   return (
-    <div
-      data-testid={`calendar`}
-      className={`flex flex-col overflow-y-scroll overscroll-y-contain`}
-    >
+    <div data-testid={`calendar`} className={`flex flex-col overflow-y-scroll`}>
       {arr.map((val) => {
         // const activity = getActivity(hour);
         const { activity } = val;

@@ -16,7 +16,8 @@ const Draggable: React.FC<DraggableProps> = ({ id, children, element }) => {
   const style = transform
     ? {
         transform: CSS.Translate.toString(transform),
-        opacity: 1
+        opacity: 1,
+        touchAction: 'none'
       }
     : undefined;
 
@@ -27,7 +28,7 @@ const Draggable: React.FC<DraggableProps> = ({ id, children, element }) => {
       {...listeners}
       {...attributes}
       id={id}
-      className=" !opacity-100"
+      className=" !opacity-100 draggable"
     >
       {children}
     </Element>

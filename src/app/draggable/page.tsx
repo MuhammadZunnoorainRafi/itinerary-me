@@ -1,6 +1,13 @@
 'use client';
 
-import { DndContext, DragEndEvent } from '@dnd-kit/core';
+import {
+  DndContext,
+  DragEndEvent,
+  useSensor,
+  useSensors,
+  PointerSensor,
+  TouchSensor
+} from '@dnd-kit/core';
 import Draggable from '@itineract/components/Draggable';
 import Droppable from '@itineract/components/Droppable';
 import { useState } from 'react';
@@ -24,6 +31,9 @@ export default function BookingPage() {
   const [bookedActivities, setBookedActivities] = useState<
     Array<{ id: string; name: string }>
   >([]);
+
+  // Add sensors for touch and pointer events
+  const sensors = useSensors(useSensor(PointerSensor), useSensor(TouchSensor));
 
   const handleDragEnd = (e: DragEndEvent) => {
     const { over } = e;
@@ -59,7 +69,7 @@ export default function BookingPage() {
   );
 
   return (
-    <DndContext onDragEnd={handleDragEnd}>
+    <DndContext sensors={sensors} onDragEnd={handleDragEnd}>
       {containers.map((containerId) => (
         <Droppable key={containerId} id={containerId}>
           {containerId === 'unbooked'
