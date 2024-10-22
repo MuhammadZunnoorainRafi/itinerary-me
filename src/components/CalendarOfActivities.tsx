@@ -50,7 +50,10 @@ const CalendarOfActivities: React.FC<CalendarOfActivitiesProps> = ({
   });
 
   return (
-    <div data-testid={`calendar`} className={`flex flex-col overflow-y-scroll`}>
+    <div
+      data-testid={`calendar`}
+      className={`flex flex-col overflow-y-visible`}
+    >
       {arr.map((val) => {
         // const activity = getActivity(hour);
         const { activity } = val;
@@ -71,6 +74,7 @@ const CalendarOfActivities: React.FC<CalendarOfActivitiesProps> = ({
             {openActivityId === activity.id && (
               <EditActivityForm
                 activity={activity}
+                activeDay={activeDay}
                 open={openActivityId === activity.id}
                 setOpen={() => setOpenActivityId(null)}
               />

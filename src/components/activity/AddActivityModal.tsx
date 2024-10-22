@@ -14,6 +14,7 @@ import Link from 'next/link';
 import Button from '../Button';
 import Reviews from '../Reviews';
 import { Itinerary } from '@itineract/types/Itinerary';
+import { toast } from 'react-toastify';
 
 type Props = {
   id: string;
@@ -50,13 +51,25 @@ const AddActivityModal = ({ id, onClose }: Props) => {
     image: string,
     description: string
   ) => {
+    const alreadyInUnbooked = Object.values(
+      currentItinerary!.activities.unbooked
+    ).find((val) => val.id === id);
+
+    const alreadyInBooked = Object.values(
+      currentItinerary!.activities.booked
+    ).find((val) => val.id === id);
+
+    if (alreadyInUnbooked || alreadyInBooked) {
+      toast.error('This Activity is already added!');
+      return;
+    }
     const formattedActivityData = {
       id: id,
       name: title,
       description: description.slice(0, 14) + ' ...',
       photo: image,
       duration: 60,
-      takeSpace:1,
+      takeSpace: 1,
       createdAt: new Date().toISOString().slice(0, 19)
     };
 
@@ -98,7 +111,7 @@ const AddActivityModal = ({ id, onClose }: Props) => {
           Add Activity
         </DialogTitle>
         <DialogContent>
-          <h1>Select an existing itinerary or create a new one?</h1>
+          <h1>Select activity from below</h1>
           <div className="container-mobile">
             <div className="grid grid-cols-2 gap-3 text-left mt-8 px-3 ">
               {trendingImageSliderData.map((cardDetails: any) => (

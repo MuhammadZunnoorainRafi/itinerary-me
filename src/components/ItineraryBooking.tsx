@@ -75,13 +75,18 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
 
               const bookedStartTime = bookedActivity.startTime as string;
               const bookedEndTime = bookedActivity.endTime as string;
-
+              console.log({
+                bookedStartTime,
+                bookedEndTime,
+                newEndTime,
+                newStartTime
+              });
               // Check if the new activity overlaps with any existing activity's time range
               return (
                 (newStartTime >= bookedStartTime &&
                   newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
-                (newEndTime > bookedStartTime && newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
-                (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
+                (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
+                (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
               );
             }
           );
@@ -132,9 +137,9 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
                   (newStartTime >= bookedStartTime &&
                     newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
                   (newEndTime > bookedStartTime &&
-                    newEndTime <= bookedEndTime) || // Overlaps with the end of an existing activity
+                    newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
                   (newStartTime <= bookedStartTime &&
-                    newEndTime >= bookedEndTime) // Completely contains an existing activity
+                    newEndTime > bookedEndTime) // Completely contains an existing activity
                 );
               }
             );
@@ -231,7 +236,6 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
         setUnbookedActivities({ ...unbookedActivities });
         // setActiveId(null)
       }
-      console.log(`Dragged over ID: ${overId}, Active ID: ${activeId}`);
     },
 
     [activeDay, activeId, bookedActivities, unbookedActivities]
@@ -260,7 +264,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     dispatch({ type: 'UPDATE_ITINERARY', payload });
   }, [bookedActivities, dispatch, itinerary, unbookedActivities]);
   return (
-    <>
+    <div className="overflow-x-hidden">
       <ItineraryTitle itinerary={itinerary} />
       <DndContext
         sensors={sensors}
@@ -275,7 +279,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
           />
         </DropDownActivities>
         <TabGroup className="mt-2">
-          <TabList className={'gap-x-1 flex'}>
+          <TabList className={'gap-x-1 flex overflow-x-scroll pb-3'}>
             {dateArray.map((val) => (
               <Tab
                 key={val}
@@ -318,7 +322,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
           activeDay={activeDay}
         /> */}
       </DndContext>
-    </>
+    </div>
   );
 };
 

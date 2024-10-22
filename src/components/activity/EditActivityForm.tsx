@@ -22,10 +22,12 @@ type Props = {
   open: boolean;
   setOpen: Dispatch<SetStateAction<boolean>>;
   activity: Activity;
+  activeDay: string;
 };
-const EditActivityForm = ({ open, setOpen, activity }: Props) => {
+const EditActivityForm = ({ open, setOpen, activity, activeDay }: Props) => {
   const { state, dispatch } = useItineraryContext();
   const params = useParams();
+  const [conflictOnDateChange, setConflictOnDateChange] = useState(false);
   const itinerary = state.itineraries.find((val) => val.id === params!.id);
   const [isError, setIsError] = useState<
     'idle' | 'booked' | 'invalidDate' | ''
@@ -36,6 +38,7 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     activity.startTime ? dayjs(activity.date) : null
   );
 
+  const existsInCurrentDate = selectedDate?.format('YYYY-MM-DD') === activeDay;
   const parseTimeString = (timeString: string) => {
     if (timeString) {
       const [hour, minute] = timeString.split(':');
@@ -45,7 +48,6 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     }
     return null;
   };
-
   const [selectedStartTime, setSelectedStartTime] = useState(
     activity.startTime ? parseTimeString(activity.startTime) : null
   );
@@ -57,6 +59,11 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
   const endTimeInNumber = +selectedEndTime!.format('H');
 
   const handleDateChange = (newValue: any) => {
+    const existsInCurrentDateOnChange =
+      newValue?.format('YYYY-MM-DD') === activeDay;
+    setIsError(
+      existsInCurrentDateOnChange && conflictOnDateChange ? 'booked' : 'idle'
+    );
     setSelectedDate(newValue);
   };
 
@@ -83,15 +90,33 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
     //   .map((val) => val.startTime)
     //   .includes(newValue?.format('HH:mm'));
-    const isBookedAlreadyBooked = bookedActivities
-      .filter((val) => val.startTime !== isBookedActivity?.startTime)
-      .some(
-        (val) =>
-          newValue.format('HH:mm') >= val.startTime! &&
-          newValue.format('HH:mm') <= val.endTime!
-      );
+    // const isBookedAlreadyBooked = bookedActivities
+    //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
+    //   .some(
+    //     (val) =>
+    //       newValue.format('HH:mm') >= val.startTime! &&
+    //       newValue.format('HH:mm') <= val.endTime!
+    //   );
+    const isConflict = Object.values(bookedActivities).some(
+      (bookedActivity) => {
+        // Skip comparing with the same activity
+        if (bookedActivity.id === isBookedActivity?.id) return false;
+
+        const bookedStartTime = bookedActivity.startTime as string;
+        const bookedEndTime = bookedActivity.endTime as string;
+        const newStartTime = newValue.format('HH:mm');
+        const newEndTime = selectedEndTime?.format('HH:mm') as any;
+        // Check if the new activity overlaps with any existing activity's time range
+        return (
+          (newStartTime >= bookedStartTime && newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+          (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
+          (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
+        );
+      }
+    );
     setSelectedStartTime(newValue);
-    setIsError(isBookedAlreadyBooked ? 'booked' : 'idle');
+    setConflictOnDateChange(isConflict);
+    setIsError(existsInCurrentDate && isConflict ? 'booked' : 'idle');
   };
   const handleEndTimeChange = (newValue: any) => {
     if (+newValue.format('H') <= startTimeInNumber) {
@@ -103,15 +128,33 @@ const EditActivityForm = ({ open, setOpen, activity }: Props) => {
     //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
     //   .map((val) => val.startTime)
     //   .includes(newValue?.format('HH:mm'));
-    const isBookedAlreadyBooked = bookedActivities
-      .filter((val) => val.startTime !== isBookedActivity?.startTime)
-      .some(
-        (val) =>
-          newValue.format('HH:mm') >= val.startTime! &&
-          newValue.format('HH:mm') <= val.endTime!
-      );
+    // const isBookedAlreadyBooked = bookedActivities
+    //   .filter((val) => val.startTime !== isBookedActivity?.startTime)
+    //   .some(
+    //     (val) =>
+    //       newValue.format('HH:mm') >= val.startTime! &&
+    //       newValue.format('HH:mm') <= val.endTime!
+    //   );
+    const isConflict = Object.values(bookedActivities).some(
+      (bookedActivity) => {
+        // Skip comparing with the same activity
+        if (bookedActivity.id === isBookedActivity?.id) return false;
+        const bookedStartTime = bookedActivity.startTime as string;
+        const bookedEndTime = bookedActivity.endTime as string;
+        const newEndTime = newValue.format('HH:mm');
+        const newStartTime = selectedStartTime?.format('HH:mm') as any;
+
+        // Check if the new activity overlaps with any existing activity's time range
+        return (
+          (newStartTime >= bookedStartTime && newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
+          (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
+          (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
+        );
+      }
+    );
     setSelectedEndTime(newValue);
-    setIsError(isBookedAlreadyBooked ? 'booked' : 'idle');
+    setConflictOnDateChange(isConflict);
+    setIsError(existsInCurrentDate && isConflict ? 'booked' : 'idle');
   };
   const handleClose = () => {
     setOpen(false);
