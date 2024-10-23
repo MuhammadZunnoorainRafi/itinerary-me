@@ -7,6 +7,8 @@ export const itinerary: Itinerary = {
   title: 'Boracay Summer 2024',
   startDate: '2024-06-12',
   endDate: '2024-06-18',
+  duration: 1,
+  country: 'singapore',
   activities: {
     unbooked: {
       // 'activity-1': {

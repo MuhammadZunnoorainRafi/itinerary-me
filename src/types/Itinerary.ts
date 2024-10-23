@@ -33,6 +33,10 @@ export const ItinerarySchema = z.object({
   title: z.string(),
   startDate: z.string(),
   endDate: z.string(),
+  image: z.any().optional(),
+  category: z.string().optional(),
+  duration: z.number().default(1),
+  country: z.enum(['singapore', 'philipine']).default('singapore'),
   activities: ActivitiesSchema
 });
 
@@ -60,5 +64,4 @@ export type ActivityB_UType = Record<string, ActivityType>;
 export type ActionItinerary =
   | { payload: Itinerary; type: 'CREATE_ITINERARY' }
   | { payload: Itinerary; type: 'UPDATE_ITINERARY' }
-  | { payload: Itinerary; type: 'UPDATE_ITINERARY_ACTIVITIES' }
   | { payload: { id: string }; type: 'DELETE_ITINERARY' };

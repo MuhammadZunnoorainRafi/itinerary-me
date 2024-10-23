@@ -1,6 +1,6 @@
 import { ActionItinerary, StateItinerary } from '@itineract/types/Itinerary';
 
-export const itineraryReducer = (
+export const philipineItineraryReducer = (
   state: StateItinerary,
   action: ActionItinerary
 ) => {
