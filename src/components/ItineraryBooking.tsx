@@ -3,6 +3,7 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
+  MouseSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
@@ -75,18 +76,13 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
 
               const bookedStartTime = bookedActivity.startTime as string;
               const bookedEndTime = bookedActivity.endTime as string;
-              console.log({
-                bookedStartTime,
-                bookedEndTime,
-                newEndTime,
-                newStartTime
-              });
+
               // Check if the new activity overlaps with any existing activity's time range
               return (
                 (newStartTime >= bookedStartTime &&
                   newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
                 (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
-                (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
+                (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
               );
             }
           );
@@ -247,7 +243,13 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     }
   });
   const sensors = useSensors(
-    useSensor(PointerSensor),
+    useSensor(PointerSensor, {
+      activationConstraint: {
+        delay: 150,
+        tolerance: 5,
+        distance: 10
+      }
+    }),
     useSensor(TouchSensor, {
       // Delay activation to allow touch scrolling
       activationConstraint: {

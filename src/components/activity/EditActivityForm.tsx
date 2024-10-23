@@ -110,7 +110,7 @@ const EditActivityForm = ({ open, setOpen, activity, activeDay }: Props) => {
         return (
           (newStartTime >= bookedStartTime && newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
           (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
-          (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
+          (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
         );
       }
     );
@@ -148,7 +148,7 @@ const EditActivityForm = ({ open, setOpen, activity, activeDay }: Props) => {
         return (
           (newStartTime >= bookedStartTime && newStartTime < bookedEndTime) || // Overlaps with the start of an existing activity
           (newEndTime > bookedStartTime && newEndTime < bookedEndTime) || // Overlaps with the end of an existing activity
-          (newStartTime <= bookedStartTime && newEndTime > bookedEndTime) // Completely contains an existing activity
+          (newStartTime <= bookedStartTime && newEndTime >= bookedEndTime) // Completely contains an existing activity
         );
       }
     );
