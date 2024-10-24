@@ -9,6 +9,7 @@ import Link from 'next/link';
 import Button from '@itineract/components/Button';
 import Reviews from '@itineract/components/Reviews';
 import PhAddItineraryModel from '@itineract/components/philipines/PhAddItineraryModel';
+import { philipinesItineraryData } from '@itineract/utility/philipinesItinerary';
 
 type Props = {
   params: {
@@ -20,7 +21,11 @@ function Page({ params }: Props) {
   const currentItinerary = threeDayTourSliderData.find(
     (val) => val.id === params.id
   );
+  const currentItineraryMain = philipinesItineraryData.find(
+    (val) => val.id === params.id
+  );
   if (!currentItinerary) return <p>Itinerary not found</p>;
+  if (!currentItineraryMain) return <p>Itinerary not found</p>;
   return (
     <div className="container-mobile pb-4">
       <div
@@ -36,7 +41,7 @@ function Page({ params }: Props) {
           />
         </Link>
         {/* <Button className="bg-[#343261]" name="Add to itinerary" /> */}
-        <PhAddItineraryModel />
+        <PhAddItineraryModel currentItinerary={currentItineraryMain} />
       </div>
       <div>
         <div className="bg-[#eeeeee] px-3 py-2">

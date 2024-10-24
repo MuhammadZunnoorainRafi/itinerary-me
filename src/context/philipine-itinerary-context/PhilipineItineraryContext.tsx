@@ -1,9 +1,11 @@
-import { ActionItinerary, StateItinerary } from '@itineract/types/Itinerary';
+import {
+  ActionPhilipineItinerary,
+  StatePhilipineItinerary
+} from '@itineract/types/Itinerary';
 import {
   createContext,
   Dispatch,
   ReactNode,
-  Reducer,
   useContext,
   useReducer
 } from 'react';
@@ -11,8 +13,8 @@ import {
 import { philipineItineraryReducer } from './philipineItineraryReducer';
 
 type InitialStateType = {
-  state: StateItinerary;
-  dispatch: Dispatch<ActionItinerary>;
+  state: StatePhilipineItinerary;
+  dispatch: Dispatch<ActionPhilipineItinerary>;
 };
 
 const PhilipineItinararyContext = createContext<InitialStateType | undefined>(

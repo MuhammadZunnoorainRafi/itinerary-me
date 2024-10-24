@@ -9,12 +9,13 @@ import AddNewItinerary from '@itineract/components/AddNewItinerary';
 import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
 import { toast } from 'react-toastify';
 import Image from 'next/image';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
 
 function Page() {
   const [isModalOpenOrClose, setModalOpenOrClose] = useState(false); // State for modal
   const {
     state: { itineraries }
-  } = useItineraryContext();
+  } = usePhilipineItineraryContext();
   // const { state, dispatch } = useItineraryContext();
   const handleModal = () => {
     setModalOpenOrClose(!isModalOpenOrClose);
@@ -32,7 +33,7 @@ function Page() {
   return (
     <div className="container-mobile">
       <div className="py-4">
-        <Link href="/">
+        <Link href="/philipines">
           <Image
             className="max-w-[25px] max-h-[25px] ml-3"
             src="/images/arrow.png"

@@ -1,16 +1,19 @@
-import { ActionItinerary, StateItinerary } from '@itineract/types/Itinerary';
+import {
+  ActionPhilipineItinerary,
+  StatePhilipineItinerary
+} from '@itineract/types/Itinerary';
 
 export const philipineItineraryReducer = (
-  state: StateItinerary,
-  action: ActionItinerary
+  state: StatePhilipineItinerary,
+  action: ActionPhilipineItinerary
 ) => {
   switch (action.type) {
-    case 'CREATE_ITINERARY': {
+    case 'CREATE_PHILIPINE_ITINERARY': {
       return {
         itineraries: [action.payload, ...state.itineraries]
       };
     }
-    case 'UPDATE_ITINERARY': {
+    case 'UPDATE_PHILIPINE_ITINERARY': {
       const updatedItineraryArray = state.itineraries.map((val) =>
         val.id === action.payload.id ? action.payload : val
       );
@@ -21,7 +24,7 @@ export const philipineItineraryReducer = (
         itineraries: updatedItineraryArray
       };
     }
-    case 'DELETE_ITINERARY': {
+    case 'DELETE_PHILIPINE_ITINERARY': {
       return {
         itineraries: state.itineraries.filter(
           (val) => val.id !== action.payload.id

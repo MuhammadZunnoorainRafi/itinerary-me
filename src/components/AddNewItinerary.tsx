@@ -54,11 +54,13 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
 
     // Check if both startDate and endDate are selected
     if (itineraryName.length >= 4 && initialStartDate && initialEndDate) {
-      const payload = {
+      const payload: Itinerary = {
         id: itinerary ? itinerary.id : uuidV4(),
         title: itineraryName,
         startDate: startDate || initialStartDate,
         endDate: endDate || initialEndDate,
+        country: 'singapore',
+        duration: 1,
         activities: itinerary
           ? itinerary.activities
           : { booked: {}, unbooked: {} }

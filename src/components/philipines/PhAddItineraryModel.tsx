@@ -5,15 +5,28 @@ import {
   DialogContent,
   DialogTitle
 } from '@mui/material';
-import React from 'react';
+import React, { useState } from 'react';
 // @ts-ignore
+import useDateStore from '@itineract/stores/useDateRangerStore';
 import Link from 'next/link';
 import Button from '../Button';
+import DatesRangesPicker from '../DatesRangesPicker';
+import { Itinerary } from '@itineract/types/Itinerary';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
+import { toast } from 'react-toastify';
+import { useRouter } from 'next/navigation';
 type Props = {
-  //   activityData: any;
+  currentItinerary: Itinerary;
 };
-const PhAddItineraryModel = () => {
+const PhAddItineraryModel = ({ currentItinerary }: Props) => {
+  const { dispatch } = usePhilipineItineraryContext();
+  const router = useRouter();
   const [open, setOpen] = React.useState(false);
+  const [DateRangeChecker, setDateRangeChecker] = useState<boolean>(false);
+  const { startDate, endDate } = useDateStore();
+
+  const initialStartDate = startDate;
+  const initialEndDate = endDate;
 
   const handleClickOpen = () => {
     setOpen(true);
@@ -23,6 +36,33 @@ const PhAddItineraryModel = () => {
     setOpen(false);
   };
 
+  // Set initial date values based on itinerary or fallback to the current store value
+
+  const handleSubmitNewItinerary = () => {
+    // Check if the itinerary name is valid (at least 4 characters)
+    if (!initialStartDate || !initialEndDate) {
+      setDateRangeChecker(true);
+    } else {
+      setDateRangeChecker(false);
+    }
+    if (initialStartDate && initialEndDate) {
+      const payload: Itinerary = {
+        id: currentItinerary.id,
+        title: currentItinerary.title,
+        startDate: startDate,
+        endDate: endDate,
+        country: currentItinerary.country,
+        duration: currentItinerary.duration,
+        activities: currentItinerary.activities
+      };
+
+      dispatch({ type: 'CREATE_PHILIPINE_ITINERARY', payload });
+      toast.success('New itinerary added');
+      router.push('/philipines/pages/create-itinerary');
+    } else {
+      console.log('Form cannot be submitted now.');
+    }
+  };
   return (
     <>
       <div
@@ -30,46 +70,40 @@ const PhAddItineraryModel = () => {
         aria-label="select"
         style={{ float: 'right' }}
       >
-        <Button name="+Add" className="px-9" />
+        <Button name="Add to itinerary" className="px-9 bg-[#343261]" />
       </div>
       <Dialog
         open={open}
         onClose={handleClose}
-        className="relative max-w-md mx-auto z-10"
+        className="absolute max-w-md mx-auto z-10 inset-0"
       >
         <DialogTitle align="center" className="font-bold text-blue">
-          Where to add ?
+          Vigan Heritage Tour is 3 days
         </DialogTitle>
         <DialogContent>
-          <h1>Select an existing itinerary or create a new one?</h1>
-          <div className="container-mobile">
-            <div className="grid grid-cols-2 gap-3 text-left mt-8 px-3 ">
-              hello world
-              <div
-                // onClick={handleModal}
-                className="  flex flex-col justify-center border-[2px] max-h-[110px] min-h-[110px] px-4 sm:px-6 border-light-gray rounded-[6px] cursor-pointer"
-              >
-                <div className="flex items-center justify-center">
-                  <Link
-                    href="/pages/create-itinerary"
-                    className="text-center font-medium text-grayish text-[17px]"
-                  >
-                    + Create new
-                  </Link>
-                </div>
-              </div>
+          <h1 className="mb-5 text-center">Select start and end date</h1>
+          <div className="container-mobile text-center">
+            <div>
+              <DatesRangesPicker
+                initialStartDate={initialStartDate}
+                initialEndDate={initialEndDate}
+              />
             </div>
+            {DateRangeChecker && (
+              <span className="text-[14.5px] text-red-500">
+                Date range cannot be left empty.
+              </span>
+            )}
           </div>
         </DialogContent>
 
         <DialogActions>
-          <div className="flex gap-3 mt-[20px] items-center justify-center mx-auto w-full mb-4 px-3">
+          <div className="flex gap-3 items-center justify-center mx-auto w-full mb-4 px-3">
             <Button
-              name="Close"
-              className="w-full !text-blue font-semibold bg-transparent border border-blue"
-              onClick={() => setOpen(false)}
+              onClick={handleSubmitNewItinerary}
+              name="Add Itinerary"
+              className="w-full bg-blue text-white"
             />
-            <Button name="Add" className="w-full bg-blue text-white" />
           </div>
         </DialogActions>
       </Dialog>

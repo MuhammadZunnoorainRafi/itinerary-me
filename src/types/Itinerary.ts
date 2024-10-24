@@ -53,6 +53,10 @@ export type StateItinerary = {
   itineraries: Itinerary[];
 };
 
+export type StatePhilipineItinerary = {
+  itineraries: Itinerary[];
+};
+
 export type ActivityEditType = {
   id: string;
   date: string;
@@ -65,3 +69,8 @@ export type ActionItinerary =
   | { payload: Itinerary; type: 'CREATE_ITINERARY' }
   | { payload: Itinerary; type: 'UPDATE_ITINERARY' }
   | { payload: { id: string }; type: 'DELETE_ITINERARY' };
+
+export type ActionPhilipineItinerary =
+  | { payload: Itinerary; type: 'CREATE_PHILIPINE_ITINERARY' }
+  | { payload: Itinerary; type: 'UPDATE_PHILIPINE_ITINERARY' }
+  | { payload: { id: string }; type: 'DELETE_PHILIPINE_ITINERARY' };
