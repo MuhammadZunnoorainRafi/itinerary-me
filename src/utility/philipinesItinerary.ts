@@ -131,7 +131,7 @@ export const philipinesItineraryData: Itinerary[] = [
   },
   {
     id: 'boracay-2024',
-    title: 'Boracay Summer 2024',
+    title: 'Boracay Summer',
     startDate: '2024-06-12',
     endDate: '2024-06-18',
     image: '/images/nature-three.png',

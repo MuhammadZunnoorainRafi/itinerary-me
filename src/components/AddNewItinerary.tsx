@@ -9,6 +9,7 @@ import { v4 as uuidV4 } from 'uuid';
 import Button from './Button';
 import DateRangePicker from './DatesRangesPicker';
 import AddActivityModal from './activity/AddActivityModal';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
 
 interface AddNewItineraryProps {
   onSubmitCloseModal: () => void; // Prop to handle modal closing
@@ -21,7 +22,9 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
   mode,
   itinerary
 }) => {
+  console.log({ itinerary });
   const { dispatch } = useItineraryContext();
+  const { dispatch: philipineDispatch } = usePhilipineItineraryContext();
 
   const [itineraryName, setItineraryName] = useState<string>(
     itinerary?.title || ''
@@ -54,26 +57,45 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
 
     // Check if both startDate and endDate are selected
     if (itineraryName.length >= 4 && initialStartDate && initialEndDate) {
-      const payload: Itinerary = {
-        id: itinerary ? itinerary.id : uuidV4(),
-        title: itineraryName,
-        startDate: startDate || initialStartDate,
-        endDate: endDate || initialEndDate,
-        country: 'singapore',
-        duration: 1,
-        activities: itinerary
-          ? itinerary.activities
-          : { booked: {}, unbooked: {} }
-      };
-      itinerary
-        ? dispatch({ type: 'UPDATE_ITINERARY', payload })
-        : dispatch({ type: 'CREATE_ITINERARY', payload });
-      itinerary
-        ? toast.success('Itinerary updated')
-        : toast.success('New itinerary added');
-      setCreatedItitnerayId(payload.id);
+      if (itinerary && itinerary.country === 'philipine') {
+        const philipinePayload: Itinerary = {
+          id: itinerary.id,
+          title: itineraryName,
+          startDate: startDate || initialStartDate,
+          endDate: endDate || initialEndDate,
+          country: itinerary.country,
+          duration: itinerary.duration,
+          activities: itinerary.activities
+        };
+        philipineDispatch({
+          type: 'UPDATE_PHILIPINE_ITINERARY',
+          payload: philipinePayload
+        });
+        toast.success('Itinerary updated');
+      } else {
+        const payload: Itinerary = {
+          id: itinerary ? itinerary.id : uuidV4(),
+          title: itineraryName,
+          startDate: startDate || initialStartDate,
+          endDate: endDate || initialEndDate,
+          country: 'singapore',
+          duration: 1,
+          activities: itinerary
+            ? itinerary.activities
+            : { booked: {}, unbooked: {} }
+        };
+
+        itinerary
+          ? dispatch({ type: 'UPDATE_ITINERARY', payload })
+          : dispatch({ type: 'CREATE_ITINERARY', payload });
+        itinerary
+          ? toast.success('Itinerary updated')
+          : toast.success('New itinerary added');
+        setCreatedItitnerayId(payload.id);
+      }
       setItineraryName('');
       setDateRange({ startDate: '', endDate: '' });
+      itinerary && onSubmitCloseModal();
       // onSubmitCloseModal(); // Close the modal
     } else {
       console.log('Form cannot be submitted now.');
@@ -102,7 +124,7 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
           </div>
         </div>
       )}
-      {createdItineraryId && (
+      {mode === 'create' && createdItineraryId && (
         <>
           <AddActivityModal
             id={createdItineraryId}

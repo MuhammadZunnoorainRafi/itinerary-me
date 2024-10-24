@@ -48,7 +48,7 @@ function Page() {
         {itineraries.map((itinerary) => (
           <Link
             key={itinerary.id}
-            href={`/pages/itinerary-record/${itinerary.id}`}
+            href={`/philipines/pages/itinerary-record/${itinerary.id}`}
             className=' flex flex-col justify-center  border-[2px] max-h-[110px] min-h-[110px] px-4 sm:px-6 border-blue rounded-[6px] cursor-pointer"'
           >
             <h5 className="text-dark-blue font-semibold pb-0.5">

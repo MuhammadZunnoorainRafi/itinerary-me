@@ -23,7 +23,7 @@ const PhAddItineraryModel = ({ currentItinerary }: Props) => {
   const router = useRouter();
   const [open, setOpen] = React.useState(false);
   const [DateRangeChecker, setDateRangeChecker] = useState<boolean>(false);
-  const { startDate, endDate } = useDateStore();
+  const { startDate, endDate, setDateRange } = useDateStore();
 
   const initialStartDate = startDate;
   const initialEndDate = endDate;
@@ -58,6 +58,7 @@ const PhAddItineraryModel = ({ currentItinerary }: Props) => {
 
       dispatch({ type: 'CREATE_PHILIPINE_ITINERARY', payload });
       toast.success('New itinerary added');
+      setDateRange({ startDate: '', endDate: '' });
       router.push('/philipines/pages/create-itinerary');
     } else {
       console.log('Form cannot be submitted now.');

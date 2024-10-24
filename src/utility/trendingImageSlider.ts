@@ -96,7 +96,7 @@ export const threeDayTourSliderData: z.infer<
   },
   {
     category: 'NATURE',
-    title: 'Boracay Summer 2024',
+    title: 'Boracay Summer',
     id: 'boracay-2024',
     rating: 4.6,
     description:

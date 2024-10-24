@@ -15,19 +15,22 @@ import { useCallback, useEffect, useState } from 'react';
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
 import dayjs from 'dayjs';
-import CalendarOfActivities from './CalendarOfActivities';
-import DropDownActivities from './DropDownActivities';
-import ItineraryTitle from './ItineraryTitle';
-import UnbookedActivitiesList from './UnbookedActivitiesList';
 import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
 import { formatTimeDnd } from '@itineract/utility/formateTimeDnd';
 import { usePathname } from 'next/navigation';
+import ItineraryTitle from '../ItineraryTitle';
+import DropDownActivities from '../DropDownActivities';
+import UnbookedActivitiesList from '../UnbookedActivitiesList';
+import CalendarOfActivities from '../CalendarOfActivities';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
 
 type ItineraryBookingProps = {
   itinerary: Itinerary;
 };
 
-const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
+const PhilipinesItineraryBooking: React.FC<ItineraryBookingProps> = ({
+  itinerary
+}) => {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [unbookedActivities, setUnbookedActivities] = useState(
     itinerary.activities.unbooked
@@ -41,7 +44,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     itinerary.endDate
   );
 
-  const { dispatch } = useItineraryContext();
+  const { dispatch } = usePhilipineItineraryContext();
 
   const handleDragStart = (e: DragStartEvent) => {
     setActiveId(e.active?.id as string);
@@ -263,7 +266,7 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
     itinerary.activities.booked = bookedActivities;
     itinerary.activities.unbooked = unbookedActivities;
     const payload = itinerary;
-    dispatch({ type: 'UPDATE_ITINERARY', payload });
+    dispatch({ type: 'UPDATE_PHILIPINE_ITINERARY', payload });
   }, [bookedActivities, dispatch, itinerary, unbookedActivities]);
   return (
     <div className="overflow-x-hidden">
@@ -328,4 +331,4 @@ const ItineraryBooking: React.FC<ItineraryBookingProps> = ({ itinerary }) => {
   );
 };
 
-export default ItineraryBooking;
+export default PhilipinesItineraryBooking;

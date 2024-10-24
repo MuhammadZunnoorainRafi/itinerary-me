@@ -10,7 +10,7 @@ import {
 import React from 'react';
 import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
 // @ts-ignore
-import { useParams, useRouter } from 'next/navigation';
+import { useParams, usePathname, useRouter } from 'next/navigation';
 import Button from '../Button';
 
 type Params = {
@@ -21,7 +21,8 @@ const DeleteItineraryModal = () => {
   const { dispatch } = useItineraryContext();
   const params = useParams() as Params;
   const [open, setOpen] = React.useState(false);
-
+  const pathname = usePathname();
+  console.log(pathname);
   const handleClickOpen = () => {
     setOpen(true);
   };

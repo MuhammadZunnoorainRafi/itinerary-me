@@ -24,7 +24,7 @@ const TravelCardPh: React.FC<TravelCardProps> = ({ cardDetails }) => {
         <h5 className="bg-lavenderMist py-1 px-2 rounded-[5px] inline-block text-[16px] text-blueGray font-semibold mt-1">
           {cardDetails.category}
         </h5>
-        <h5 className="max-w-[120px] text-[16px] font-semibold text-dark-blue mt-1">
+        <h5 className=" text-[16px] font-semibold text-dark-blue mt-1">
           {cardDetails.title}
         </h5>
         <Reviews placeReviews={cardDetails} />

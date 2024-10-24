@@ -1,14 +1,14 @@
 'use client';
 import Breadcrumb from '@itineract/components/Breadcrumb';
 import ItineraryBooking from '@itineract/components/ItineraryBooking';
-import React from 'react';
-import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
-import { useParams } from 'next/navigation';
+import PhilipinesItineraryBooking from '@itineract/components/philipines/PhilipinesItineararyBooking';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useParams } from 'next/navigation';
 
 function Page() {
-  const { state } = useItineraryContext();
+  const { state } = usePhilipineItineraryContext();
   const params = useParams();
   const itinerary = state.itineraries.find((val) => val.id === params!.id);
   if (!itinerary) {
@@ -18,7 +18,7 @@ function Page() {
   return (
     <div className="container-mobile">
       <div className="py-4">
-        <Link href="/">
+        <Link href="/philipines">
           <Image
             className="max-w-[25px] max-h-[25px] ml-3"
             src="/images/arrow.png"
@@ -29,7 +29,7 @@ function Page() {
         </Link>
       </div>
       <Breadcrumb />
-      <ItineraryBooking itinerary={itinerary} />
+      <PhilipinesItineraryBooking itinerary={itinerary} />
     </div>
   );
 }
