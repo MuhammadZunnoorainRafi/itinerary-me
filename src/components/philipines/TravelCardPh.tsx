@@ -29,9 +29,9 @@ const TravelCardPh: React.FC<TravelCardProps> = ({ cardDetails }) => {
         </h5>
         <Reviews placeReviews={cardDetails} />
         <p className="dark-blue mt-0.5">${cardDetails.price}.00</p>
-        {/* <Link href={`pages/tour-details#${cardDetails.id}`}> */}
-        <Button name="View Details" />
-        {/* </Link> */}
+        <Link href={`/philipines/pages/tour-details/${cardDetails.id}`}>
+          <Button name="View Details" />
+        </Link>
         <AddToWishList />
       </div>
     </div>

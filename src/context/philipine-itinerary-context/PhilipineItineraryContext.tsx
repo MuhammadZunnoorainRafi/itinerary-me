@@ -7,8 +7,8 @@ import {
   useContext,
   useReducer
 } from 'react';
-import { philipineItineraryReducer } from './PhilipineItineraryReducer';
-import { philipinesItineraryData } from '@itineract/utility/philipinesItinerary';
+
+import { philipineItineraryReducer } from './philipineItineraryReducer';
 
 type InitialStateType = {
   state: StateItinerary;
@@ -25,7 +25,7 @@ export const PhilipineItinararyContextProvider = ({
   children: ReactNode;
 }) => {
   const initialState = {
-    itineraries: philipinesItineraryData
+    itineraries: []
   };
   const [state, dispatch] = useReducer(philipineItineraryReducer, initialState);
   return (
@@ -35,7 +35,7 @@ export const PhilipineItinararyContextProvider = ({
   );
 };
 
-export const useItineraryContext = () => {
+export const usePhilipineItineraryContext = () => {
   const context = useContext(PhilipineItinararyContext);
   if (context === null) {
     throw new Error('Please use context inside context provider');

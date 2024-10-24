@@ -1,10 +1,14 @@
 'use client';
-import { trendingImageSliderData } from '@itineract/utility/trendingImageSlider';
+import {
+  threeDayTourSliderData,
+  trendingImageSliderData
+} from '@itineract/utility/trendingImageSlider';
 import { useRef } from 'react';
 import 'swiper/css';
 import 'swiper/css/navigation';
 import { Swiper, SwiperSlide } from 'swiper/react';
 import TravelCardPh from './TravelCardPh';
+import { philipinesItineraryData } from '@itineract/utility/philipinesItinerary';
 
 type Props = {
   heading: string;
@@ -37,7 +41,7 @@ function HeritageTour({ heading, duration }: Props) {
               }
             }}
           >
-            {trendingImageSliderData.map((cardDetails) => (
+            {threeDayTourSliderData.map((cardDetails) => (
               <SwiperSlide
                 key={cardDetails.id}
                 className={`min-w-[44%] max-w-[44%]`}
