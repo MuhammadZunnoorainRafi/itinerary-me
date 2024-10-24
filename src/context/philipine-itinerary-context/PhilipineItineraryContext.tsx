@@ -30,6 +30,7 @@ export const PhilipineItinararyContextProvider = ({
     itineraries: []
   };
   const [state, dispatch] = useReducer(philipineItineraryReducer, initialState);
+  console.log({ t: state.itineraries });
   return (
     <PhilipineItinararyContext.Provider value={{ state, dispatch }}>
       {children}

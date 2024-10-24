@@ -3,7 +3,6 @@ import {
   DndContext,
   DragEndEvent,
   DragStartEvent,
-  MouseSensor,
   PointerSensor,
   TouchSensor,
   useSensor,
@@ -14,15 +13,13 @@ import { Itinerary } from '@itineract/types/Itinerary';
 import { useCallback, useEffect, useState } from 'react';
 
 import { Tab, TabGroup, TabList, TabPanel, TabPanels } from '@headlessui/react';
-import dayjs from 'dayjs';
-import { useItineraryContext } from '@itineract/context/itinerary-context/ItineraryContext';
-import { formatTimeDnd } from '@itineract/utility/formateTimeDnd';
-import { usePathname } from 'next/navigation';
-import ItineraryTitle from '../ItineraryTitle';
-import DropDownActivities from '../DropDownActivities';
-import UnbookedActivitiesList from '../UnbookedActivitiesList';
-import CalendarOfActivities from '../CalendarOfActivities';
 import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
+import { formatTimeDnd } from '@itineract/utility/formateTimeDnd';
+import dayjs from 'dayjs';
+import CalendarOfActivities from '../CalendarOfActivities';
+import DropDownActivities from '../DropDownActivities';
+import ItineraryTitle from '../ItineraryTitle';
+import UnbookedActivitiesList from '../UnbookedActivitiesList';
 
 type ItineraryBookingProps = {
   itinerary: Itinerary;
@@ -261,7 +258,6 @@ const PhilipinesItineraryBooking: React.FC<ItineraryBookingProps> = ({
       }
     })
   );
-
   useEffect(() => {
     itinerary.activities.booked = bookedActivities;
     itinerary.activities.unbooked = unbookedActivities;

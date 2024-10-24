@@ -11,17 +11,7 @@ export const philipinesItineraryData: Itinerary[] = [
     country: 'philipine',
     category: 'HOTEL',
     activities: {
-      unbooked: {
-        'activity-1': {
-          id: 'activity-1',
-          name: 'Puka Beach Island',
-          description: '1 day, 3 pax',
-          photo: { url: '/images/puka-beach.png', title: 'Puka Beach' },
-          duration: 60,
-          takeSpace: 1,
-          createdAt: '2024-06-01T08:00:00'
-        }
-      },
+      unbooked: {},
       booked: {
         'activity-4': {
           id: 'activity-4',
@@ -32,11 +22,11 @@ export const philipinesItineraryData: Itinerary[] = [
             title: 'Boracay Para Sailing'
           },
           duration: 120,
-          takeSpace: 1,
+          takeSpace: 2,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '06:00',
-          endTime: '07:00'
+          endTime: '08:00'
         },
         'activity-2': {
           id: 'activity-2',
@@ -56,11 +46,11 @@ export const philipinesItineraryData: Itinerary[] = [
           description: '1 day, 3 pax',
           photo: { url: '/images/lunch.png', title: "Lunch at D'Talipapa" },
           duration: 60,
-          takeSpace: 1,
+          takeSpace: 3,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '12:00',
-          endTime: '13:00'
+          endTime: '15:00'
         }
       }
     }
@@ -75,17 +65,7 @@ export const philipinesItineraryData: Itinerary[] = [
     country: 'philipine',
     category: 'ZOO',
     activities: {
-      unbooked: {
-        'activity-1': {
-          id: 'activity-1',
-          name: 'Puka Beach Island',
-          description: '1 day, 3 pax',
-          photo: { url: '/images/puka-beach.png', title: 'Puka Beach' },
-          duration: 60,
-          takeSpace: 1,
-          createdAt: '2024-06-01T08:00:00'
-        }
-      },
+      unbooked: {},
       booked: {
         'activity-4': {
           id: 'activity-4',
@@ -96,11 +76,11 @@ export const philipinesItineraryData: Itinerary[] = [
             title: 'Boracay Para Sailing'
           },
           duration: 120,
-          takeSpace: 1,
+          takeSpace: 2,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '06:00',
-          endTime: '07:00'
+          endTime: '08:00'
         },
         'activity-2': {
           id: 'activity-2',
@@ -120,11 +100,11 @@ export const philipinesItineraryData: Itinerary[] = [
           description: '1 day, 3 pax',
           photo: { url: '/images/lunch.png', title: "Lunch at D'Talipapa" },
           duration: 60,
-          takeSpace: 1,
+          takeSpace: 3,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '12:00',
-          endTime: '13:00'
+          endTime: '15:00'
         }
       }
     }
@@ -139,17 +119,7 @@ export const philipinesItineraryData: Itinerary[] = [
     country: 'philipine',
     category: 'Nature',
     activities: {
-      unbooked: {
-        'activity-1': {
-          id: 'activity-1',
-          name: 'Puka Beach Island',
-          description: '1 day, 3 pax',
-          photo: { url: '/images/puka-beach.png', title: 'Puka Beach' },
-          duration: 60,
-          takeSpace: 1,
-          createdAt: '2024-06-01T08:00:00'
-        }
-      },
+      unbooked: {},
       booked: {
         'activity-4': {
           id: 'activity-4',
@@ -160,11 +130,11 @@ export const philipinesItineraryData: Itinerary[] = [
             title: 'Boracay Para Sailing'
           },
           duration: 120,
-          takeSpace: 1,
+          takeSpace: 2,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '06:00',
-          endTime: '07:00'
+          endTime: '08:00'
         },
         'activity-2': {
           id: 'activity-2',
@@ -184,11 +154,11 @@ export const philipinesItineraryData: Itinerary[] = [
           description: '1 day, 3 pax',
           photo: { url: '/images/lunch.png', title: "Lunch at D'Talipapa" },
           duration: 60,
-          takeSpace: 1,
+          takeSpace: 3,
           createdAt: '2024-06-01T08:00:00',
           date: '2024-10-12',
           startTime: '12:00',
-          endTime: '13:00'
+          endTime: '15:00'
         }
       }
     }

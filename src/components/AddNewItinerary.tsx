@@ -22,7 +22,6 @@ const AddNewItinerary: React.FC<AddNewItineraryProps> = ({
   mode,
   itinerary
 }) => {
-  console.log({ itinerary });
   const { dispatch } = useItineraryContext();
   const { dispatch: philipineDispatch } = usePhilipineItineraryContext();
 

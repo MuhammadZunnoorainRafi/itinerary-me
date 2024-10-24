@@ -12,6 +12,7 @@ import { useItineraryContext } from '@itineract/context/itinerary-context/Itiner
 // @ts-ignore
 import { useParams, usePathname, useRouter } from 'next/navigation';
 import Button from '../Button';
+import { usePhilipineItineraryContext } from '@itineract/context/philipine-itinerary-context/PhilipineItineraryContext';
 
 type Params = {
   id: string;
@@ -19,10 +20,11 @@ type Params = {
 const DeleteItineraryModal = () => {
   const router = useRouter();
   const { dispatch } = useItineraryContext();
+  const { dispatch: philipineDispatch } = usePhilipineItineraryContext();
   const params = useParams() as Params;
   const [open, setOpen] = React.useState(false);
   const pathname = usePathname();
-  console.log(pathname);
+  const isPhilipine = pathname?.includes('philipines');
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -33,10 +35,17 @@ const DeleteItineraryModal = () => {
 
   const handleDelete = () => {
     setTimeout(() => {
-      dispatch({ type: 'DELETE_ITINERARY', payload: { id: params.id } });
+      isPhilipine
+        ? philipineDispatch({
+            type: 'DELETE_PHILIPINE_ITINERARY',
+            payload: { id: params.id }
+          })
+        : dispatch({ type: 'DELETE_ITINERARY', payload: { id: params.id } });
     }, 300);
     setOpen(false);
-    router.push('/pages/create-itinerary');
+    isPhilipine
+      ? router.push('/philipines/pages/create-itinerary')
+      : router.push('/pages/create-itinerary');
   };
 
   return (

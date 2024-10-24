@@ -15,6 +15,7 @@ import Button from '../Button';
 import Reviews from '../Reviews';
 import { Itinerary } from '@itineract/types/Itinerary';
 import { toast } from 'react-toastify';
+import { usePathname } from 'next/navigation';
 
 type Props = {
   id: string;
@@ -22,6 +23,7 @@ type Props = {
 };
 
 const AddActivityModal = ({ id, onClose }: Props) => {
+  const pathname = usePathname();
   const {
     state: { itineraries },
     dispatch
@@ -34,7 +36,9 @@ const AddActivityModal = ({ id, onClose }: Props) => {
   const haveActivityCheck =
     currentItinerary?.activities.unbooked &&
     Object.keys(currentItinerary?.activities.unbooked).length > 0;
-  const [open, setOpen] = useState(haveActivityCheck ? false : true);
+  const [open, setOpen] = useState(
+    pathname?.includes('philipines') ? false : haveActivityCheck ? false : true
+  );
 
   const handleClickOpen = () => {
     setOpen(true);
